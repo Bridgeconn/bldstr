@@ -1,0 +1,22 @@
+<% if products.size > 0 %>
+	<% products.each do |p| %>
+		<tr class="QuickSearchResult" id="QuickSearchResult<%= p.id %>">
+			<td class="QuickSearchResultImage ">
+				<%= image_tag p.image_url, width:80, height: 100, alt: p.name %>
+				<!-- <img src="http://cdn3.bigcommerce.com/s-s89jjs/products/77/images/272/S1_B2_thumb__64720.1490993182.60.90.jpg?c=2" alt="Belonging to a Family of Families"> -->
+			</td>
+			<td class="QuickSearchResultMeta">
+				<div class="QuickSearchResultName">
+					<%= link_to p.name, product_path(p), title: p.name %></div>
+				<span class="Price"><%= number_to_currency(p.price) %></span>
+			</td>
+		</tr>
+	<% end %>
+	<tr class="QuickSearchResult">
+		<td class="QuickSearchResultMeta">
+			<div class="QuickSearchResultName">
+				<%= paginate @products, remote: true %>
+			</div>
+		</td>
+	</tr>
+<% end %>

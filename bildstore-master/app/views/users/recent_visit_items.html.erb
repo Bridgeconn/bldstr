@@ -1,0 +1,59 @@
+<div class="inner">
+	<div class="Block Breadcrumb Moveable Panel" id="AccountBreadcrumb">
+		<ul class="last">
+			<li><%= link_to "Home", root_path %></li>
+			<li>My Account</li>
+		</ul>
+	</div>
+	<h1 class="TitleHeading">My Account</h1>
+	<div class="full-width page-content">
+		<div class="Left" id="LayoutColumn1">
+			<div class="Block AccountMenu Moveable Panel" id="SideAccountMenu">
+				<h4>Manage Your Account</h4>
+				<div class="BlockContent">
+					<%= render 'left_menu' %>
+				</div>
+			</div>
+		</div>
+		<div class="Content" id="LayoutColumn2">
+			<div class="Content" id="LayoutColumn2">
+				<div class="Block Moveable Panel" id="AccountRecentItems">
+					<h2>You Recently Viewed...</h2>
+					<div class="BlockContent">
+						<% if @products.size > 0 %>
+							<div style="display: ">
+								<p class="InfoMessage">
+									The items you've recently looked at on our site are shown below.
+								</p>
+								<form name="frmCompare" id="frmCompare" action="#">
+									<ul class="ProductList">
+										<% @products.each do |product| %>
+											<li class="something" style="min-height: 364px;">
+												<div class="ProductImage">
+													<%= link_to image_tag(product.product.image_url, height: '285px'), product_path(product.product) %>
+												</div>
+												<div class="ProductDetails" style="min-height: 41px;">
+													<%= link_to product.product.name, product_path(product.product), class: "pname" %>
+												</div>
+												<em class="p-price"><%= number_to_currency(product.product.price) %></em>
+											</li>
+										<% end %>
+										<div class="clear"></div>
+										<!-- <div class="CompareButton" style="display:none">
+											<input type="submit" value="Compare Selected" class="btn">
+										</div> -->
+									</ul>
+								</form>
+							</div>
+						<% else %>
+							<p class="InfoMessage">
+								You haven't looked at any items on our site. When you do, they will appear here.
+							</p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>

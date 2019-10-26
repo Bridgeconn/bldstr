@@ -1,0 +1,123 @@
+<html xml:lang="en" lang="en">
+	<head>
+		<title>BILD International India Store - Print invoice for order #<= @order.id%></title>
+			<link rel="stylesheet" href="/assets/Styles/printinvoice.css?" type="text/css">
+		</head>
+		<body style="margin:0 !important;">
+			<div class="Invoice">
+				<div id="Logo">
+					<%=link_to image_tag('bild_store_logo.png', border: 0, alt: 'BILD International India Store' ), root_path  %>
+				</div>
+				<div class="InvoiceTitle">
+					BILD International India Store Invoice for Order #<%= @order.id%>
+				</div>
+				<!-- <div class="StoreAddress">
+					2400 Oakwood Rd<br>
+					Ames, Iowa 50014
+				</div> -->
+				<div class="AddressRow">
+					<div class="BillingAddress">
+						<div class="InvoiceHeading">Billing Details</div>
+						<strong><%= @order.billing_full_name %></strong>
+						<br>
+						<%= @order.billing_company %>
+						<br>
+						<%= @order.billing_address_1 %><br>
+						<%= @order.billing_city %>, <%= state_name(@order.billing_country, @order.billing_state) %> <%= @order.billing_zip %><br>
+						<%= country_name(@order.billing_country) %>
+						<div></div>
+						<dl></dl>
+						<div>Phone: <%= @order.billing_phone %></div>
+						<div style="">Email: <%= @order.billing_email %></div>
+					</div>
+					<div class="ShippingAddress" style="">
+						<div class="InvoiceHeading">Shipping Details</div>
+						<strong><%= @order.shipping_full_name %></strong>
+						<br>
+						<%= @order.billing_company %>
+						<br>
+						<%= @order.shipping_address_1 %><br>
+						<%= @order.shipping_city %>, <%= state_name(@order.shipping_country,@order.shipping_state) %> <%= @order.shipping_zip %><br>
+						<%= country_name(@order.shipping_country) %>
+						<div></div>
+						<dl></dl>
+						<div>Phone: <%= @order.shipping_phone %></div>
+						<div style="">Email: <%= @order.billing_email %></div>
+					</div>
+				</div>
+				<div class="InvoiceDetails">
+					<div class="InvoiceDetailsLeft">
+						<div class="DetailRowInvoice">
+							<div class="Label">Order:</div>
+							<div class="Value">#<%= @order.id %></div>
+						</div>
+						<!-- <div class="DetailRow">
+							<div class="Label">Payment Method:</div>
+							<div class="Value">Invoice Church / Organization ($32.91)</div>
+						</div> -->
+					</div>
+					<div class="InvoiceDetailsRight">
+						<div class="DetailRowInvoice">
+							<div class="Label">Order Date:</div>
+							<div class="Value"><%= formatted_date(@order.created_at) %></div>
+						</div>
+						<!-- <div class="DetailRow" style="">
+							<div class="Label">Shipping Method:</div>
+							<div class="Value">USPS (Priority Mail)</div>
+						</div> -->
+					</div>
+				</div>
+				<%if @order.cart_items.size > 0 %>
+					<div class="InvoiceItems">
+						<div class="InvoiceHeading">Order Items</div>
+						<table class="InvoiceTable">
+							<thead>
+							</thead>
+							<tbody class="InvoiceItemList">
+								<%@order.cart_items.each do |item| %>
+									<tr class="">
+										<td class="ProductQuantity"><%= item.quantity %></td>
+										<td class="ProductSku"><%= item.product_name %></td>
+										<td class="ProductCost"><%= number_to_currency(item.unit_price)%></td>
+										<td class="ProductTotal"><%= number_to_currency(item.total_price) %></td>
+									</tr>
+								<% end -%>
+							</tbody>
+							<tbody class="InvoiceTotals">
+								<tr class="InvoiceSubtotal InvoiceTotalRow">
+									<td class="Title" colspan="4">Subtotal:</td>
+									<td class="Total"><%= number_to_currency(@order.subtotal)%></td>
+								</tr>
+								<!-- <tr class="InvoiceShipping InvoiceTotalRow">
+									<td class="Title" colspan="4">Shipping:</td>
+									<td class="Total">$5.91 USD</td>
+								</tr> -->
+								<tr class="InvoiceTotal InvoiceTotalRow">
+									<td class="Title" colspan="4">Grand Total:</td>
+									<td class="Total"><%= number_to_currency(@order.total_amount )%></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div style="display:;" class="CheckoutHideOrderTermsAndConditions">
+						<hr class="clear">
+						<h5 class="PTB20">Shipping Notes:</h5>
+						<div class="PL20" style="">
+						</div>
+						<div class="PL20 MT10">
+							<label for="AgreeTermsAndConditions">* Shipping and Handling charges extra. The cost will be intimated via mail or phone upon placing the order</label>
+						</div>
+					</div>
+				<% end %>
+				<div class="InvoiceComments" style="display: none">
+					<div class="InvoiceHeading">Comments</div>
+					<blockquote>
+						<%#= @order.notes %>
+					</blockquote>
+				</div>
+			</div>
+			<script type="text/javascript">
+				window.setTimeout("window.print();", 1000);
+			</script>
+		</body>
+	</html>

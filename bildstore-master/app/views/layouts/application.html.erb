@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bildstore</title>
+		<%= csrf_meta_tags %>
+		<%= stylesheet_link_tag    'application', media: 'all' %>
+		<%= javascript_include_tag 'application' %>
+		<%= favicon_link_tag 'favicon60dc.ico' %>
+	</head>
+	<body>
+		<div class="page">
+			<%= render "layouts/header" %>
+			<div class="main">
+				<%= yield %>
+			</div>
+			<div class="footer">
+				<%= render "layouts/footer" %>
+			</div>
+		</div>
+	</body>
+</html>

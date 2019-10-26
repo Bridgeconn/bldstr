@@ -1,0 +1,67 @@
+<div class="inner">
+	<div class="Content Widest" id="LayoutColumn2">
+		<div class="Block Breadcrumb Moveable Panel" id="ForgotPasswordBreadcrumb">
+			<ul class="last">
+				<li><a href="http://store.bild.org/">Home</a></li>
+				<li><a href="javascript:history.go(-1)">... Previous Page</a></li>
+				<li>Forgot Password</li>
+			</ul>
+		</div>
+		<div class="Block Moveable Panel" id="ForgotPasswordForm">
+			<h2>Change Your Password</h2>
+			<div class="BlockContent">
+				<% if devise_error_messages!.length > 0 %>
+					<p class="ErrorMessage" style="">
+						<%= devise_error_messages! %>
+					</p>
+				<% end %>
+				<p>
+					Passwords must be at least 8 characters
+				</p>
+				<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+					<%= f.hidden_field :reset_password_token %>
+					<div class="FormContainer HorizontalFormContainer form">
+						<dl>
+							<dt><span class="Required">*</span> Password:</dt>
+							<dd>
+								<%= f.password_field :password, autofocus: true, autocomplete: "off", class: "Textbox" %>
+							</dd>
+							<dt><span class="Required">*</span> Confirm Password:</dt>
+							<dd>
+								<%= f.password_field :password_confirmation, autocomplete: "off", class: "Textbox" %>
+							</dd>
+							<dt>&nbsp;</dt>
+							<dd>
+								<p class="Submit">
+									<%= f.submit "Continue", class: "btn" %>
+								</p>
+							</dd>
+						</dl>
+					</div>
+				<% end %>
+				<script type="text/javascript">
+					//<![CDATA[
+					  document.getElementById("user_password").focus();
+					//]]>
+					$(function() {
+					  $('#new_user').validate({ // initialize the plugin
+					      rules: {
+					          "user[password]": {
+					              required: true,
+					              minlength: 8
+					          },
+					
+					          "user[password_confirmation]": {
+					            required: true,
+					            equalTo: "#user_password",
+					            minlength: 8
+					          },
+					      }
+					  });
+					});
+				</script>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

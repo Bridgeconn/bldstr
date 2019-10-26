@@ -1,0 +1,302 @@
+<div class="inner">
+	<div class="Block Breadcrumb Moveable Panel" id="CreateAccountBreadcrumb">
+		<ul class="last">
+			<li><a href="<%= root_path %>">Home</a></li>
+			<li><a href="javascript:history.go(-1)">... Previous Page</a></li>
+			<li>Create Account</li>
+		</ul>
+		<%= devise_error_messages! %>
+	</div>
+	<div class="Content Widest" id="LayoutColumn1">
+		<script type="text/javascript"></script>
+		<div class="Block Moveable Panel no-ptop" id="CreateAccountForm">
+			<h1 class="TitleHeading">Create an Account</h1>
+			<div class="BlockContent BlockContent full-width page-content">
+				<p style="display: " class="txt24 blockquote mtm">
+					Checkout faster at <em>BILD International India Store</em> and save multiple addresses in your address book.
+				</p>
+				<p class="ErrorMessage" style="display:none">
+				</p>
+				<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+					<div class="FormContainer HorizontalFormContainer form">
+						<div class="box borderB">
+							<h3>Personal Details</h3>
+							<p>Enter your email address and password to create your account.</p>
+							<dt>
+								<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Email Address</span>
+							</dt>
+							<dd>
+								<%= f.text_field :email, 'aria-required': "true" , class: "Textbox Field200 FormField user_email" %><br>
+								<div class="divCheckValidEmail" style="display: none"></div>
+							</dd>
+							<dt>
+								<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Password</span>
+							</dt>
+							<dd>
+								<%= f.password_field :password, 'aria-required': "true" , class: "Textbox Field200 FormField field-xlarge password" %>
+								<style>
+									input[type="password"] + .PasswordRequirements {
+									    display: none;
+									    position: relative;
+									    z-index: 500;
+									}
+									
+									.PasswordRequirementsContent {
+									    background-color: #333;
+									    color: #fff;
+									    font-size: 12px;
+									    font-weight: normal;
+									    line-height: 16px;
+									    max-width: 200px;
+									    padding: 10px;
+									}
+									
+									input[type="password"]:focus + .PasswordRequirements {
+									    display: block;
+									}
+									
+									@media screen and (min-width: 480px) {
+									    .PasswordRequirementsContent {
+									        left: 20px;
+									        position: absolute;
+									        top: 10px;
+									    }
+									
+									    .PasswordRequirementsContent:before {
+									        border: 10px solid #333;
+									        border-left-color: transparent;
+									        border-right-color: transparent;
+									        border-top: 0;
+									        content: '';
+									        left: 10px;
+									        position: absolute;
+									        top: -10px;
+									    }
+									}
+								</style>
+								<div class="LittleNotePassword" style="display: none">(Leave blank to remain unchanged)</div>
+							</dd>
+							<dt>
+								<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Confirm Password</span>
+							</dt>
+							<dd>
+								<%= f.password_field :password_confirmation, 'aria-required': "true" , class: "Textbox Field200 FormField field-xlarge password_confirmed" %>
+								<div class="divCheckPasswordMatch" style="display: none"></div>
+							</dd>
+						</div>
+						<%= f.fields_for :addresses do |ff| %>
+							<div class="box borderB">
+								<h3>Shipping Details</h3>
+								<p>Enter the name and address you'd like us to ship your order to.</p>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">First Name</span>
+								</dt>
+								<dd>
+									<%= ff.text_field :first_name, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_first_name" %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Last Name</span>
+								</dt>
+								<dd>
+									<%= ff.text_field :last_name, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_last_name" %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: hidden">*</span> <span class="FormFieldLabel">Company Name</span>
+								</dt>
+								<dd>
+									<%= ff.text_field :company, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_comany" %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Country</span>
+								</dt>
+								<dd>
+									<div class="selector fixedWidth" id="uniform-FormField_11">
+										<span style="user-select: none;" id="country_text"><%= Country["IN"] %></span>
+										<%=ff.select(:country, Country.all, {:selected => "IN"},  id: "country") %>
+										<%#= ff.country_select :country, class: "user_country" %>
+										<!-- <select id="FormField_11" name="FormField[2][11]" value="United States" aria-required="true" class="Field200 FormField field-xlarge Textbox" style="" size="1"> -->
+									</div>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Zip/Postcode</span>
+								</dt>
+								<dd>
+									<%= ff.text_field :postcode, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_zip" %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">City</span>
+								</dt>
+								<dd>
+									<%= ff.text_field :city, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_city" %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">State/Province</span>
+								</dt>
+								<dd>
+									<div class="selector" id="uniform-FormField_12" style="width: 192px;">
+										<span style="user-select: none;" id="state_text">Choose a State</span>
+										<%=ff.select(:state, Country["IN"].states.keys.collect{|state_key| [Country["IN"].states[state_key]["name"], state_key]}, {:include_blank => "Choose a State" },  id: "state") %>
+									</div>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Address Line 1</span>
+								</dt>
+								<dd>
+									<%= ff.text_field :address_line1, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_add1" %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: hidden">*</span> <span class="FormFieldLabel">Address Line 2</span>
+								</dt>
+								<dd>
+									<%= ff.text_field :address_line2, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Phone Number</span>
+								</dt>
+								<dd>
+									<%= ff.text_field :phone_number, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_phone" %>
+								</dd>
+							</dd>
+						</div>
+					<% end %>
+					<div class="box">
+						<p class="Submit">
+							<input type="submit" class="btn alt" id="new_user" value="Create My Account">&nbsp;&nbsp;&nbsp;
+							<a href="<%= root_path %>">Return to store</a>
+						</p>
+					</div>
+				</div>
+			<% end %>
+			<script>
+				$(function() {
+				  //password Validation start
+				  $.validator.addMethod("valueNotEquals", function(value, element, arg){
+				    return arg !== value;
+				   }, "Value must not equal arg.");
+				
+				  function checkPasswordMatch() {
+				    var password = $(".password").val();
+				    var confirmPassword = $(".password_confirmed").val();
+				    if (password != confirmPassword){
+				      $(".divCheckPasswordMatch").css("display", "block");
+				      $(".divCheckPasswordMatch").css("color", "red");
+				      $(".divCheckPasswordMatch").html("Passwords do not match!");
+				    }else{
+				      $(".divCheckPasswordMatch").css("color", "green");
+				      $(".divCheckPasswordMatch").html("Passwords match.");
+				    }
+				  }
+				  $( ".password_confirmed" ).keyup(function() {
+				    checkPasswordMatch();
+				  });
+				  //password Validation end
+				
+				  //Email Validation start
+				  function validateEmail(emailaddress){
+				    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+				    if(!emailReg.test(emailaddress)) {
+				      $(".divCheckValidEmail").css("display", "block");
+				      $(".divCheckValidEmail").css("color", "red");
+				      $(".divCheckValidEmail").html("Email not valid!");
+				    }else{
+				      $(".divCheckValidEmail").css("color", "green");
+				      $(".divCheckValidEmail").html("Email valid!");
+				    }
+				  }
+				  $(".user_email").keyup(function() {
+				    var email = $(".user_email").val();
+				    validateEmail(email);
+				  });
+				  //Email Validation end
+				
+				  function validate_message(invalidData){
+				    console.log(invalidData);
+				    $(".ErrorMessage").css("display", "block");
+				    $(".ErrorMessage").css("color", "red");
+				    $(".ErrorMessage").html("Please fill "+ invalidData);
+				  }
+				
+				  $('#new_user').validate({ // initialize the plugin
+				      rules: {
+				          "user[email]": {
+				              required: true,
+				              email: true
+				          },
+				          "user[password]": {
+				              required: true,
+				              minlength: 8
+				          },
+				
+				          "user[password_confirmation]": {
+				            required: true,
+				            equalTo: "#user_password",
+				            minlength: 8
+				          },
+				          "user[addresses_attributes][0][first_name]":{
+				            required: true
+				          },
+				          "user[addresses_attributes][0][last_name]":{
+				            required: true
+				          },
+				          "user[addresses_attributes][0][postcode]":{
+				            required: true
+				          },
+				          "user[addresses_attributes][0][city]":{
+				            required: true
+				          },
+				          "user[addresses_attributes][0][country]":{
+				              required: true
+				          },
+				          "user[addresses_attributes][0][state]":{
+				              required: true
+				          },
+				          "user[addresses_attributes][0][address_line1]":{
+				            required: true
+				          },
+				          "user[addresses_attributes][0][phone_number]":{
+				            required: true
+				          },
+				          messages: {
+				             "user[addresses_attributes][0][state]": { valueNotEquals: "Please select state!" }
+				         }
+				      }
+				  });
+				  $("#country").change(function(){
+				     $("#AjaxLoading").show();
+				     $("#country_text").html($("#country option:selected").text())
+				    var state = "";
+				    $.ajax({
+				      url: "/change/country",
+				      data: "country_2_code="+$(this).val(),
+				      success: function(res){
+				        $("#AjaxLoading").hide();
+				        if(res.states){
+				          Object.keys(res.states).map(function(key, index){
+				            state += '<option value='+key+'>'+res.states[key].name+'</option>'
+				          })
+				        }
+				         $("#state_text").html("Choose a State");
+				        $("#state").html(state);
+				      },
+				      error: function(res){
+				         $("#AjaxLoading").hide();
+				        alert("Unable to change country. Please try later");
+				      }
+				    })
+				  });
+				
+				  $("#state").change(function(){
+				    $("#state_text").html($("#state :selected").text());
+				  });
+				});
+			</script>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+</div>

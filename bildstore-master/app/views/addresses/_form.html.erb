@@ -1,0 +1,151 @@
+<%= form_for @address, html: { id:"address_form" } do |f| %>
+	<%=f.hidden_field :type , value: "Shipping" %>
+	<div class="FormContainer HorizontalFormContainer form">
+		<dl>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">First Name</span>
+			</dt>
+			<dd>
+				<%= f.text_field :first_name, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+				<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Last Name</span>
+			</dt>
+			<dd>
+				<%= f.text_field :last_name, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+				<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: hidden">*</span> <span class="FormFieldLabel">Company Name</span>
+			</dt>
+			<dd>
+				<%= f.text_field :company, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Country</span>
+			</dt>
+			<dd>
+				<div class="selector fixedWidth" id="uniform-FormField_11">
+					<span style="user-select: none;" id="user_select"><%= Country["IN"].name %></span>
+					<%= f.select(:country, Country.all.sort, {:selected  => Country["IN"].alpha2}, class: "Field200 FormField field-xlarge Textbox") %>
+					<!-- <select id="FormField_11" name="FormField[2][11]" value="United States" aria-required="true" class="Field200 FormField field-xlarge Textbox" style="" size="1"> -->
+				</div>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Zip/Postcode</span>
+			</dt>
+			<dd>
+				<%= f.text_field :postcode, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+				<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">City</span>
+			</dt>
+			<dd>
+				<input type="hidden" class="FormFieldId" value="10"><input type="hidden" class="FormFieldFormId" value="2"><input type="hidden" class="FormFieldType" value="singleline"><input type="hidden" class="FormFieldPrivateId" value="City">
+				<%= f.text_field :city, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">State/Province</span>
+			</dt>
+			<dd>
+				<div class="selector" id="uniform-FormField_12" style="width: 192px;"><span style="user-select: none;" id="user-select-state">
+						<%if @address.state %>
+							<%= state_name(@address.country, @address.state) %>
+						<% else %>
+							Choose a State
+						<% end -%>
+					</span>
+					<%#= f.select :state, {}, class: "FormField JSHidden Field200 field-xlarge" %>
+					<%=f.select(:state, Country["IN"].states.keys.collect{ |state_key| [Country["IN"].states[state_key]["name"], state_key] }, {:include_blank => "Choose a State" }, class: "FormField JSHidden Field200 field-xlarge") %>
+				</div>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Address Line 1</span>
+			</dt>
+			<dd>
+				<%= f.text_field :address_line1, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+				<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: hidden">*</span> <span class="FormFieldLabel">Address Line 2</span>
+			</dt>
+			<dd>
+				<%= f.text_field :address_line2, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+				<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+			</dd>
+			<dt>
+				<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Phone Number</span>
+			</dt>
+			<dd>
+				<%= f.text_field :phone_number, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+			</dd>
+			<dt>&nbsp;</dt>
+			<dd><input type="submit" value="Save Address" class="btn"></dd>
+		</dl>
+	</div>
+<% end %>
+<script type="text/javascript">
+	$(function(){
+	  $('#address_form').validate({ // initialize the plugin
+	          rules: {
+	
+	              "address[first_name]":{
+	                required: true
+	              },
+	              "address[last_name]":{
+	                required: true
+	              },
+	              "address[postcode]":{
+	                required: true
+	              },
+	              "address[city]":{
+	                required: true
+	              },
+	              "address[country]":{
+	                  required: true
+	              },
+	              "address[state]":{
+	                  required: true
+	              },
+	              "address[address_line1]":{
+	                required: true
+	              },
+	              "address[phone_number]":{
+	                required: true
+	              },
+	              messages: {
+	                 "address[state]": { valueNotEquals: "Please select state!" }
+	              }
+	          }
+	      });
+	})
+	$("#address_country").change(function() {
+	    $("#user_select").html($(this).find(":selected").text());
+	    $("#AjaxLoading").show();
+	    $.ajax({
+	      url: '<%= list_states_addresses_path %>',
+	      type: 'get',
+	      data: {
+	        country_2_code: $(this).val()
+	      },
+	      success: function(response) {
+	        console.log(response)
+	        $("#address_state").html('');
+	        $.each(response, function(code, obj) {
+	          $("#address_state").append("<option value='" + code + "'>" + obj["name"]  + "</option>");
+	        });
+	        $("#AjaxLoading").hide();
+	        $("#order_shipping_state").show();
+	      },
+	      error: function(response) {
+	        $("#AjaxLoading").hide();
+	        window.console.log(response);
+	      }
+	    });
+	  });
+	$("#address_state").change(function(){
+	  $("#user-select-state").html($("#address_state :selected").text());
+	});
+</script>

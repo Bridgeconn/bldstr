@@ -1,0 +1,74 @@
+<div class="inner">
+  <h1 class="TitleHeading">Secure Checkout</h1>
+  <div class="Content Widest" id="LayoutColumn1">
+      <div class="Block Moveable Panel">
+          <div class="BlockContent ExpressCheckoutContent">
+              <div class="CreateAccount">
+                  <%= form_tag checkout_cart_items_path do %>
+                      <div id="CheckoutGuestForm" style="">
+                          <h3>I'm A New Customer</h3>
+                          <div class="mtop">
+                              <p>Register with us for a faster checkout, to track the status of your order and more. You can also checkout as a guest.</p>
+                              <div class="form" style="line-height: 2;">
+                                  <ul>
+                                      <li><label><div class="radio" id="uniform-checkout_type_guest"><span><input name="checkout_type" id="checkout_type_guest" value="guest" type="radio"></span></div> Checkout as a guest</label></li>
+                                      <li><label><div class="radio" id="uniform-checkout_type_register"><span class="checked"><input name="checkout_type" id="checkout_type_register" value="register" checked="checked" type="radio"></span></div> Register an account</label></li>
+                                      <li><input type="submit" value="Continue" class="btn"></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                      <div style="display: none">
+                          <h3>I'm A New Customer</h3>
+                          <div class="mtop">
+                              <p>Create an account with us and you'll be able to:</p>
+                              <div class="PL40">
+                                  <ul style="margin-left: 0; line-height: 1.4;">
+                                      <li>Checkout faster</li>
+                                      <li>Save multiple addresses in your address book</li>
+                                      <li>Access order history and track your orders</li>
+                                  </ul>
+                              </div>
+                          </div>
+                          <p class="Submit" style="">
+                              <input type="submit" value="Continue" class="btn">
+                          </p>
+                      </div>
+                  <% end %>
+              </div>
+              <div class="AccountLogin">
+                  <h3>I'm A Returning Customer</h3>
+                  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                      <p>To continue, please enter your email address and password that you use for your account.</p>
+                      <div class="FormContainer HorizontalFormContainer">
+                          <p style="display: none" class="">
+                          
+                          </p>
+                          <dl>
+                              <dt>Email Address:</dt>
+                              <dd>
+                              <%= f.text_field :email, class: "Textbox Field200 InitialFocus" %>
+
+                              <dt>Password:</dt>
+                              <dd>
+                              <%= f.password_field :password, class: "Textbox Field200" %> 
+                              </dd>
+
+                              <dt>&nbsp;</dt>
+                              <dd><a href="https://store.bild.org/login.php?action=reset_password">Forgot your password?</a></dd>
+                          </dl>
+                          <p class="Submit">
+                              <input id="LoginButton" type="submit" value="Continue" class="btn">
+                          </p>
+                      </div>
+                  <% end %>
+              </div>
+          </div>
+      </div>
+      <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>
+<script type="text/javascript">
+  $("input:radio").uniform();
+</script>

@@ -1,0 +1,79 @@
+<div class="inner">
+	<div class="Block Moveable Panel Breadcrumb" id="CategoryBreadcrumb">
+		<ul class="last">
+			<li><a href="<%= root_path %>">Home</a></li>
+			<li><a href="<%=%>"><%= @category.name %></a></li>
+		</ul>
+	</div>
+	<div class="productlist-page">
+		<div id="CategoryHeading">
+			<h1 class="TitleHeading"><%= raw @category.name %></h1>
+			<div class="CategoryDescription">
+				<div class="SubCategoryList mobile" style="display: none;">
+					<div class="selector fixedWidth"><span style="user-select: none;">Select sub-category</span><select>
+							<option value="" selected="selected">Select sub-category</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Left fleft">
+			<div class="Block Moveable Panel" id="SideCategoryShopByPrice" style="display:none;">
+			</div>
+		</div>
+		<div class="Content Wide " id="LayoutColumn1">
+			<div class="product-nav">
+				<div class="FloatRight SortBox">
+					<form action="" method="get">
+					</form>
+				</div>
+				<div class="Block Moveable Panel" id="CategoryPagingTop" style="display:none;"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="Block CategoryContent Moveable Panel" id="CategoryContent">
+				<script type="text/javascript">
+					// lang.CompareSelectMessage = 'Please choose at least 2 products to compare.';
+					// lang.PleaseSelectAProduct = 'Please select at least one product to add to your cart.';
+					// config.CompareLink = '';
+				</script>
+				<form name="frmCompare" id="frmCompare" action="" method="get" onsubmit="return compareProducts(config.CompareLink)">
+					<ul class="ProductList ">
+						<% if @products.size > 0 %>
+							<% @products.each do | product | -%>
+								<li class="<%= cycle('even', 'odd') -%>" style="min-height: 455px;">
+									<div class="ProductImage QuickView" data-product="76">
+										<%= link_to (image_tag(product.image_url, alt: product.slug)), product_path(product), style: "height: 285px;" %>
+										<div class="QuickViewBtn" style="background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(247, 247, 247)), to(rgb(220, 219, 219))); color: rgb(0, 0, 0); margin: 0px; top: 126px; left: 47px; display: none;" data-product="76">Quick View</div>
+									</div>
+									<div class="ProductDetails" style="min-height: 41px;">
+										<%= link_to product.name, product_path(product), class: "pname" %>
+									</div>
+									<%= link_to "See Details ›", product_path(product), class: "detail-link" %>
+									<em class="p-price"><%= number_to_indian_currency(product.price) %></em>
+									<div class="ProductCompareButton" style="display:none">
+										<input type="checkbox" class="CheckBox" name="compare_product_ids" id="compare_76" value="76" onclick="product_comparison_box_changed(this.checked)"> <label for="compare_76">Compare</label> <br>
+									</div>
+									<div class="ProductActionAdd" style="display:;">
+										<%if product.quantity > 0 %>
+											<%= link_to "Add To Cart", add_to_cart_cart_items_path(product_id: product.id), class: "btn icon-Add To Cart" -%>
+										<% else %>
+											<%= link_to "Out of Stock", "javascript:;", class: "btn icon-Add To Cart outOfStock" -%>
+										<% end %>
+									</div>
+								</li>
+							<% end %>
+						<% end %>
+					</ul>
+					<div class="product-nav btm">
+						<div class="Block Moveable Panel" id="CategoryPagingBottom" style="display:none;"></div>
+						<div class="clear"></div>
+					</div>
+					<div class="CompareButton" style="display:none">
+						<input value="Compare Selected" type="submit" class="btn alt">
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>

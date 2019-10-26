@@ -1,0 +1,198 @@
+<div class="inner">
+	<h1 class="TitleHeading">Secure Checkout</h1>
+	<div class="Content Widest" id="LayoutColumn1">
+		<div class="full-width">
+			<div class="Block Moveable Panel" id="ChooseShippingAddress">
+				<h3>Billing Details</h3>
+				<div class="BlockContent">
+					<p class="ErrorMessage" style="display: none">
+					</p>
+					<%= form_with model: current_order, local: true, id: "guest_billing_form" do |f| %>
+						<div class="FormContainer HorizontalFormContainer form">
+							<dl>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Email Address</span>
+								</dt>
+								<dd>
+									<%= f.text_field :billing_email, :'aria-required' => "true",  class: "Textbox Field200 FormField" %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">First Name</span>
+								</dt>
+								<dd>
+									<%= f.text_field :billing_first_name, :'aria-required' => "true",  class: "Textbox Field200 FormField", autocomplete: false, autocorrect: false, autocapitalize: false, autofill: false %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Last Name</span>
+								</dt>
+								<dd>
+									<%= f.text_field :billing_last_name, :'aria-required' => "true",  class: "Textbox Field200 FormField", autocomplete: false, autocorrect: false, autocapitalize: false, autofill: false %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: hidden">*</span> <span class="FormFieldLabel">Company Name</span>
+								</dt>
+								<dd>
+									<%= f.text_field :billing_company, :'aria-required' => "false", 
+												 class: "Textbox Field200 FormField" %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Country</span>
+								</dt>
+								<dd>
+									<div class="selector fixedWidth" id="uniform-FormField_11"><span style="user-select: none;" id="country_text">
+											<%= @country.name %></span>
+										<%= f.select(:billing_country, Country.all, {:selected => @order.billing_country.present? ? @order.billing_country : "IN"},  id: "country", class: "Field200 FormField field-xlarge", "aria-required": true ) %>
+									</div>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Zip/Postcode</span>
+								</dt>
+								<dd>
+									<%= f.text_field :billing_zip, 'aria-required': "true" , class: "Textbox Field45 FormField", autocomplete: false, autocorrect: false, autocapitalize: false, autofill: false %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">City</span>
+								</dt>
+								<dd>
+									<%= f.text_field :billing_city, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_city" %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">State/Province</span>
+								</dt>
+								<dd>
+									<div class="selector" id="uniform-FormField_12" style="width: 192px;">
+										<span  id="state_text"><%= (@order.billing_country.present? && @order.billing_state.present?) ? state_name(@order.billing_country, @order.billing_state) : "Choose a State" %></span></span>
+									<%=f.select(:billing_state, @country.states.keys.collect{|state_key| [@country.states[state_key]["name"], state_key]}, {:include_blank => "Choose a State", :selected => @order.billing_state },  id: "billing_state") %>
+								</div>
+							</dd>
+							<dt>
+								<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Address Line 1</span>
+							</dt>
+							<dd>
+								<%= f.text_field :billing_address_1, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_add1" %>
+								<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+							</dd>
+							<dt>
+								<span class="Required FormFieldRequired" style="visibility: hidden">*</span> <span class="FormFieldLabel">Address Line 2</span>
+							</dt>
+							<dd>
+								<%= f.text_field :billing_address_2, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+								<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+							</dd>
+							<dt>
+								<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Phone Number</span>
+							</dt>
+							<dd>
+								<%= f.text_field :billing_phone, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_phone" %>
+							</dd>
+							<dt style="">&nbsp;</dt>
+							<dd style="">
+								<label>
+									<span class="checked">
+										<%= check_box_tag :ship_to_billing, 1, true %>
+									</span>
+									<input type="hidden" name="address_type" value="billing" />
+									I also want to ship to this address
+								</label>
+							</dd>
+							<dt>&nbsp;</dt>
+							<dd><input type="submit" class="billButton btn" value="Bill &amp; Ship to this Address"></dd>
+						</dl>
+					</div>
+				<% end %>
+				<script type="text/javascript">
+					$(document).ready(function() {
+						// $('#NewShippingAddress input ').uniform();
+						$("input[type='checkbox']").uniform();
+						$('#ship_to_billing').click(function() {
+							if(this.checked) {
+								$('.billButton').val("Bill & Ship to this Address");
+							}
+							else {
+								$('.billButton').val("Bill to this address");
+							}
+						});
+						$('#guest_billing_form').validate({ // initialize the plugin
+					            rules: {
+					                "order[billing_email]": {
+					                    required: true,
+					                    email: true
+					                },
+					                "order[billing_first_name]":{
+					                  required: true,
+					                },
+					                "order[billing_last_name]":{
+					                  required: true,
+					                },
+					                "order[billing_zip]":{
+					                  required: true
+					                },
+					                "order[billing_city]":{
+					                  required: true
+					                },
+					                "order[billing_country]":{
+					                    required: true
+					                },
+					                "order[billing_state]":{
+					                    required: true
+					                },
+					                "order[billing_address_1]":{
+					                  required: true
+					                },
+					                "order[billing_phone]":{
+					                  required: true
+					                },
+					                messages: {
+					                   "order[billing_state]": { valueNotEquals: "Please select state!" }
+					               }
+					            }
+					        });
+					
+					});
+					
+					$(document).ajaxComplete(function(event,request, settings) {
+						$('input[type=checkbox], input[type=radio]').not('.UniApplied').uniform();
+					});
+				</script>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$("#country").change(function(){
+			$("#country_text").html($("#country option:selected").text())
+			var state = "";
+			$.ajax({
+	      url: '/change/country',
+	      type: 'GET',
+	      data: {
+	        country_2_code: $(this).val()
+	      },
+	      success: function(res) {
+	        $("#billing_state").html('');
+	        $("#AjaxLoading").hide();
+	        if(res.states){
+	                Object.keys(res.states).map(function(key, index){
+	                  state += '<option value='+key+'>'+res.states[key].name+'</option>'
+	                })
+	          }
+	          $("#billing_state").html(state);
+	        $("#state_text").html('Choose a state');
+	        $("#order_shipping_state").show();
+	      },
+	      error: function(response) {
+	        $("#AjaxLoading").hide();
+	        console.log(response);
+	      }
+	    	});
+		});
+	});
+	  $("#billing_state").change(function(){
+	    $("#state_text").html($(this).find(":selected").text());
+	  });
+</script>

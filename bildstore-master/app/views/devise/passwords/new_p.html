@@ -1,0 +1,70 @@
+<div class="inner">
+    <div class="Content Widest" id="LayoutColumn1">
+        <div class="Block Breadcrumb Moveable Panel" id="ForgotPasswordBreadcrumb">
+            <ul class="last">
+                <li><a href="<%=root_path%>">Home</a></li>
+                <li><a href="javascript:history.go(-1)">... Previous Page</a></li>
+                <li>Forgot Password</li>
+            </ul>
+        </div>
+        <div class="Block Moveable Panel" id="ForgotPasswordForm">
+            <h1 class="TitleHeading">Change Your Password</h1>
+            <div class="BlockContent full-width">
+                <p>
+                    Fill in your email below to request a new password. An email will be sent to the address below containing a link to verify your email address.
+                </p>
+                <p class="ErrorMessage" style="display: none">
+                	 <%= devise_error_messages! %>
+                </p>
+                <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+                    <div class="FormContainer HorizontalFormContainer">
+                        <dl>
+                            <dt><span class="Required">*</span> Email Address:</dt>
+                            <dd>
+                            		<%= f.email_field :email, autofocus: true, class: "TextBox" %>
+                            </dd>
+                            <dt>&nbsp;</dt>
+                            <dd>
+                            		<%= f.submit "Submit" %>
+                            </dd>
+                        </dl>
+                    </div>
+                <% end %>
+               
+								  <%= devise_error_messages! %>
+
+								  <div class="field">
+								    <%= f.label :email %><br />
+								    
+								  </div>
+
+								  <div class="actions">
+								    
+								  </div>
+								<% end %>
+                <script type="text/javascript">
+                //<![CDATA[
+                document.getElementById("email").focus();
+                //]]>
+                </script>
+                <script type="text/javascript">
+                //<![CDATA[
+                /* Make sure all account details are filled in */
+                function check_forgot_password_form() {
+                    var email = g("email");
+                    if (email.value.indexOf("@") == -1 || email.value.indexOf(".") == -1) {
+                        alert("Please type in a valid email address, such as joe@example.com");
+                        email.focus();
+                        email.select();
+                        return false;
+                    }
+
+                    return true;
+                }
+                //]]>
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

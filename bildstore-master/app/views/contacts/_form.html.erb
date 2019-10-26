@@ -1,0 +1,77 @@
+<div class="inner">
+	<div class="Block Breadcrumb Moveable Panel" id="PageBreadcrumb">
+		<ul class="last">
+			<li><a href="<%= root_path %>">Home</a></li>
+			<li>Contact Us</li>
+		</ul>
+	</div>
+	<h1 class="TitleHeading">Contact Us</h1>
+	<div class="Left" id="LayoutColumn1">
+		<div class="Block Moveable Panel" id="SideSubPageList" style="display:none;">
+		</div>
+	</div>
+	<div class="Content" id="LayoutColumn2">
+		<div class="BlockContent PageContent">
+			<div class="BlockContent">
+				<% if flash[:notice] %>
+					<p class= SuccessMessage %>
+						<%= flash[:notice] %>
+					</p>
+				<% end %>
+			</div>
+			<p>We're happy to answer questions or help you with returns.<br>
+				Please fill out the form below.</p>
+			<p><br>
+			</p>
+			<%= form_with model: @contact, id: :ContactForm, local: true do |f| %>
+				<div class="FormContainer HorizontalFormContainer">
+					<dl class="cf">
+						<dt style="display: "><span class="Required">*</span>&nbsp; Full Name</dt>
+						<dd style="display: ">	<%= f.text_field :full_name, 'aria-required': "true" , class: "Textbox Field200" %></dd>
+						<dt><span class="Required">*</span>&nbsp; Email Address</dt>
+						<dd><%= f.text_field :email, 'aria-required': "true" , class: "Textbox Field200 FormField" %></dd>
+						<dt style="display: "><span class="Required">*</span>&nbsp; Phone Number</dt>
+						<dd style="display: ">
+							<%= f.text_field :phone_number, 'aria-required': "true" , class: "Textbox Field200" %>
+						</dd>
+						<dt style="display: ">&nbsp;&nbsp; Order Number</dt>
+						<dd style="display: ">
+							<%= f.text_field :order_number, 'aria-required': "true" , class: "Textbox Field200" %>
+						</dd>
+						<dt><span class="Required">*</span>&nbsp; Details</dt>
+						<dd>
+							<%= f.text_area :details, 'aria-required': "true" , class: "Field300", rows: 5, cols: 50 %>
+							<div id="SearchResults"></div>
+						</dd>
+					</dl>
+					<p class="Submit">
+						<%= f.submit :'Send Form', class: "btn" %>
+					</p>
+				</div>
+			<% end %>
+			<script type="text/javascript">
+				$('#ContactForm').validate({ // initialize the plugin
+				          rules: {
+				
+				              "contact[full_name]":{
+				                required: true
+				              },
+				              "contact[email]":{
+				                required: true,
+				                email: true
+				              },
+				              "contact[phone_number]":{
+				                required: true
+				              },
+				              "contact[details]":{
+				                required: true
+				              }
+				
+				          }
+				});
+			</script>
+		</div>
+		<div class="Block Moveable Panel" id="PageComments" style="display:none;"></div>
+	</div>
+	<div class="clear"></div>
+</div>

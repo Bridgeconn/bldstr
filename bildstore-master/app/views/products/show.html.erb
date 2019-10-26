@@ -1,0 +1,242 @@
+<div class="inner">
+	<div class="Breadcrumb" id="ProductBreadcrumb">
+		<ul class="last">
+			<li>
+				<a href="<%= root_path %>">Home</a></li>
+			<li><%= @product.name  %>
+			</li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+		//<![CDATA[
+			var ThumbURLs = new Array();
+			var ProductImageDescriptions = new Array();
+			var CurrentProdThumbImage = 0;
+			var ShowVariationThumb =false;
+			var ProductThumbWidth = 500;
+			var ProductThumbHeight =  750;
+			var ProductMaxZoomWidth = 1280;
+			var ProductMaxZoomHeight =  1280;
+			var ProductTinyWidth = 60;
+			var ProductTinyHeight =  90;
+			  ThumbURLs[0] = "";
+			  ProductImageDescriptions[0] = "Image 1";
+		
+				//Don't enable Cloud Zoom (product image zoom) on touch device
+				//Mouseenter/Mouseover events are not ideal for touch devices
+				//for more info search for this code in /script/main.js
+				if (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0)) {
+				    var ShowImageZoomer = false;
+				} else {
+				    var ShowImageZoomer = 1;
+				}
+		
+				var productId = 76;
+				//]]>
+	</script>
+	<div class="Block Moveable Panel PrimaryProductDetails no-ptop" id="ProductDetails" itemscope="" itemtype="#">
+		<div class="BlockContent">
+			<h1 itemprop="name"><%= raw @product.name %></h1>
+			<!-- left-content -->
+			<div class="left-content">
+				<div class="ProductThumb" style="width: 520px; height: 857px;">
+					<link rel="stylesheet" type="text/css" href="/assets/jquery/plugins/fancybox/fancybox.css" media="screen">
+					<div id="LightBoxImages" style="display: none;"><!--  -->
+						<a class="iframe" href="<%= product_path(@product) %>"></a>
+					</div>
+					<script type="text/javascript">
+						//<![CDATA[
+						var originalImages = '';
+						function showProductImageLightBox(TargetedImage) {
+							var currentImage=0;
+							if(TargetedImage) {
+								currentImage = TargetedImage;
+							} else if(CurrentProdThumbImage!='undefined'){
+								currentImage = CurrentProdThumbImage;
+							}
+							// if(ShowVariationThumb) {
+							// 	var url = "http://store.bild.org/productimage.php?product_id=76&image_rule_id=" + encodeURIComponent(ShowVariationThumb);
+							// } else {
+							// 	var url = "<%= @product.image_url %>"
+							// }
+							$('#LightBoxImages a').attr("href", "<%= @product.image_url %>");
+						
+							initProductLightBox();
+						
+							$('#LightBoxImages a').trigger('click');
+						}
+						
+						function initProductLightBox() {
+						
+							var w = $(window).width();
+							var h = $(window).height();
+						
+							// tiny image box width plus 3 px margin, times the number of tiny images, plus the arrows width
+							var carouselWidth = (64 + 3) * Math.min(10, 2) + 70;
+						
+							//the width of the prev and next link
+							var navLinkWidth = 250;
+						
+							var requiredNavWidth = Math.max(carouselWidth, navLinkWidth);
+						
+							// calculate the width of the widest image after resized to fit the screen.
+							// 200 is the space betewn the window frame and the light box frame.
+							var wr = Math.min(w-200, 853) / 853;
+							var hr = Math.min(h-200, 1280) / 1280;
+						
+							var r = Math.min(wr, hr);
+						
+							var imgResizedWidth = Math.round(r * 853);
+							var imgResizedHeight = Math.round(r * 1280);
+						
+							//calculate the width required for lightbox window
+							var horizontalPadding = 100;
+							var width = Math.min(w-100, Math.max(requiredNavWidth, imgResizedWidth+ horizontalPadding));
+							var height = h-100;
+						
+							$('#LightBoxImages a').fancybox({
+								'frameWidth'	: width,
+								'frameHeight'	: height,
+								callbackOnStart : function(){
+								$('.zoomPad').css('z-index',0);
+								},
+								callbackOnClose : function(){
+								$('.zoomPad').css('z-index',90);
+								}
+							});
+						}
+						
+						$(document).ready(function() { originalImages = $('#LightBoxImages').html(); });
+						//]]>
+					</script>
+					<div class="ProductThumbImage">
+						<a rel="prodImage" style="margin:auto;" onclick="showProductImageLightBox(); return false; return false;">
+							<%= image_tag (@product.image_url), title: @product.name, class: "cloudzoom" %>
+						</a>
+					</div>
+					<div class="ImageCarouselBox clearfix" style="margin: 0px auto; padding-left: 213px;">
+						<a id="ImageScrollPrev" class="prev" href="#" style="display: none;"><img src="http://cdn3.bigcommerce.com/s-s89jjs/templates/__custom/images/LeftArrow.png?t=1478891286" alt="" width="20" height="20"></a>
+						<div class="ProductTinyImageList" style="visibility: visible; overflow: hidden; position: relative; z-index: 2; left: 0px; width: 74px;">
+							<ul style="margin: 0px; padding: 0px; position: relative; list-style-type: none; z-index: 1; width: 74px; left: 0px;">
+								<li style="height: 94px; width: 64px; border: 1px solid rgb(7, 88, 153); opacity: 0.5; overflow: hidden; float: left;" onclick="showProductImageLightBox(0); return false;" onmouseover="showProductThumbImage(0, this)" id="TinyImageBox_0">
+									<div class="TinyOuterDiv" style="height: 90px; width: 60px; border: 2px solid rgb(7, 88, 153);">
+										<div style="height:90px; width:60px;">
+											<a href="javascript:void(0);" rel="{&quot;gallery&quot;: &quot;prodImage&quot;, &quot;smallimage&quot;: &quot;<%=@product.image_url %>&quot;, &quot;largeimage&quot;: &quot;<%= @product.image_url %>&quot;}"><img id="TinyImage_0" style="padding-top:16px;" width="39" height="58" src="<%= @product.image_url %>" alt="Image 1" title="Image 1"></a>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<!-- <a id="ImageScrollNext" class="next" href="#"><img src="http://cdn3.bigcommerce.com/s-s89jjs/templates/__custom/images/RightArrow.png?t=1478891286" alt="" width="20" height="20"></a> -->
+					</div>
+					<div style="display:none;" class="SeeMorePicturesLink">
+						<a href="#" onclick="showProductImageLightBox(); return false; return false;" class="ViewLarger">Click to enlarge</a>
+					</div>
+				</div>
+			</div>
+			<!-- Product Details Content -->
+			<div class="ProductMain">
+				<div class="ProductDetailsGrid">
+					<div class="DetailRow product-heading">
+						<div class="Block Panel ProductDescription" id="ProductDescription">
+							<h2 class="subtitle">Product Description</h2>
+							<div class="ProductDescriptionContainer prodAccordionContent" itemprop="description">
+								<p class="ResourceCommon"><span><%= raw @product.description %></span></p>
+							</div>
+							<!--<hr style="" class="ProductSectionSeparator" />-->
+						</div>
+						<div class="Value" style="display: none;" itemprop="brand" itemscope="" itemtype="">
+							<h4 class="BrandName"><a itemprop="url" href=""><span itemprop="name"></span></a></h4>
+						</div>
+					</div>
+					<div class="DetailRow PriceRow p-price" itemprop="offers" itemscope="" itemtype="" style="">
+						<div class="Value">
+							<span class="ProductPrice VariationProductPrice"><%= number_to_currency(@product.price) %></span>
+						</div>
+					</div>
+					<div class="s-price">
+					</div>
+					<div class="DetailRow product-rating" style="display: none">
+						<div class="Value">
+							<span>
+								<img src="" alt="0 Stars">
+								<span style="display:none">
+									<a href="#ProductReviews" onclick="">
+									</a>
+								</span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="Block Moveable Panel" id="ProductTabs" style="display:none;"></div>
+				<div class="productAddToCartRight">
+					<%= form_tag add_to_cart_cart_items_path, method: :get, id: "productDetailsAddToCartForm" do %>
+						<div class="ProductDetailsGrid ProductAddToCart">
+							<!-- details grid -->
+							<div class="DetailRow qty" style="display: ;">
+								<div class="Label QuantityInput">Quantity:</div>
+								<div class="Value AddCartButton">
+									<%= hidden_field_tag :product_id, @product.id %>
+									<span>
+										<%if @product.quantity > 0 %>
+											<span style="padding: 0; margin: 0;">
+												<%= text_field_tag :quantity, 1, class: "qtyInput quantityInput" , id: "text_qty_", size: 3 %>
+											</span>
+										<% end %>
+									</span>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="OutOfStockMessage InfoMessage ErrorMessage">
+							</div>
+							<div class="addto">
+								<div class="InfoMessage" style="display: none;">
+								</div>
+								<%if @product.quantity > 0 %>
+								<div class="BulkDiscount" style="display: ">
+									<div class="DetailRow">
+										<input type="button" class="btn add-to-cart AddCartButton" value="Add To Cart" onclick = "return submitCartForm();">
+									</div>
+								</div>
+								<% else %>
+								<div class="BulkDiscount" style="display: ">
+									<div class="DetailRow">
+										<input type="button" class="btn out-of-stock AddCartButton" value="Out of Stock">
+									</div>
+								</div>
+								<% end %>
+								<!-- Add to Wishlist -->
+								<!-- //Custom Add to Wishlist -->
+							</div>
+							<!-- addto -->
+						</div>
+					<% end -%>
+					<script language="javascript" type="text/javascript">
+						//<![CDATA[
+												lang.OptionMessage = "";
+												lang.VariationSoldOutMessage = "The selected product combination is currently unavailable.";
+												lang.InvalidQuantity = "Please enter a valid product quantity.";
+												lang.EnterRequiredField = "Please enter the required field(s).";
+												lang.InvalidFileTypeJS = "The file type of the file you are trying to upload is not allowed for this field.";
+												var ShowAddToCartQtyBox = "1";
+												productMinQty=0;productMaxQty=Number.POSITIVE_INFINITY;
+												//]]>
+													function submitCartForm(){
+														Cart.ValidateQuantityForm($("#productDetailsAddToCartForm"))
+													}
+					</script>
+				</div>
+				<div class="Clear AddThisButtonBox">
+					<!-- AddThis Button BEGIN -->
+					<div class="addthis_toolbox addthis_default_style ">
+						<a class="addthis_button_"></a>
+						<div class="atclear"></div>
+					</div>
+					<script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e94ed470ee51e32"></script>
+					<!-- AddThis Button END -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

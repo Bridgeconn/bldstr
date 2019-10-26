@@ -1,0 +1,99 @@
+<div class="inner">
+	<div class="Content Widest" id="LayoutColumn1">
+		<script type="text/javascript">
+			$(window).load(function() {
+			    $('.slide-show').flexslider({
+			        slideshowSpeed: $('.slide-show').attr('data-swap-frequency') * 1000,
+			        animation: "slide",
+			        animationLoop: false,
+			        slideshow: false,
+			        pauseOnHover: true,
+			        controlNav: false,
+			        directionNav: false
+			    });
+			});
+		</script>
+		<div class="slide-show slide-show-render slide-show-render-full flexslider Panel" data-swap-frequency="8" id="HomeSlideShow">
+			<div class="flex-viewport" style="overflow: hidden; position: relative;">
+				<ol class="slides" style="width: 1000%; transition-duration: 0s; transform: translate3d(-1000px, 0px, 0px);">
+					<li class="slide flex-active-slide" style="width: 1000px; float: left; display: block;">
+						<div class="slide-content">
+							<div class="slide-overlay">
+								<h2 class="slide-heading" style="color: #ffffff"></h2>
+								<p class="slide-text" style="color: #ffffff"></p>
+								<div class="slide-button" style="display:none; visibility: hidden"><span class="btn" style="color: #ffffff"></span></div>
+							</div>
+							<a href="<%= root_path %>">
+								<span class="slide-image-wrapper">
+									<%=image_tag "library-banner-img.jpg", class: "slide-image", height: "465px;" %>
+								</span>
+							</a>
+							<div class="carousel-caption carousel-text">
+								<h2>A UNIQUE LEARNING SYSTEM</h2>
+								<p>BASED ON THE WAY OF CHRIST AND HIS APOSTLES</p>
+							</div>
+						</div>
+					</li>
+					<li class="slide flex-active-slide" style="width: 1000px; float: left; display: block;">
+						<div class="slide-content">
+							<div class="slide-overlay">
+								<h2 class="slide-heading" style="color: #ffffff"></h2>
+								<p class="slide-text" style="color: #ffffff"></p>
+								<div class="slide-button" style="display:none; visibility: hidden"><span class="btn" style="color: #ffffff"></span></div>
+							</div>
+							<a href="#">
+								<span class="slide-image-wrapper">
+									<%=image_tag "library-banner-img.jpg", class: "slide-image", height: "465px;" %>
+								</span>
+							</a>
+							<div class="carousel-caption carousel-text">
+								<h2>A UNIQUE LEARNING SYSTEM</h2>
+								<p>BASED ON THE WAY OF CHRIST AND HIS APOSTLES</p>
+							</div>
+						</div>
+					</li>
+				</ol>
+			</div>
+			<!-- <ul class="flex-direction-nav">
+				<li><a class="flex-prev" href="#">Previous</a></li>
+				<li><a class="flex-next" href="#">Next</a></li>
+			</ul> -->
+		</div>
+		<!-- //slide-show -->
+		<div id="Slider">
+			<div id="SliderTitles">
+				<a id="ResourceSliderTitle" class="SliderTitle ActiveTitle">
+					<h2><%= @category.name.try(:titleize) if @category %></h2>
+				</a>
+			</div>
+			<ul id="ResourceSliderContent" class="ProductList ">
+				<%if @childrens && @childrens.size > 0 %>
+					<% @childrens.each do |category| %>
+						<li style="min-height: 229px;">
+							<%= link_to (image_tag(category.image_url, alt: category.slug)), category_path(category) if category.image_url %>
+							<h3><%= raw category.name %></h3>
+							<div class="SliderItemDescription"><%= raw category.short_description %></div>
+							<%= link_to "See Details ›", category_path(category) %>
+						</li>
+					<% end %>
+				<% end %>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+			    $("#ResourceByProgramSliderTitle").on("click", function() {
+			        $("#ResourceSliderTitle").removeClass("ActiveTitle");
+			        $("#ResourceByProgramSliderTitle").addClass("ActiveTitle");
+			        $("#ResourceSliderContent").hide();
+			        $("#ResourceByProgramSliderContent").show();
+			    });
+			    $("#ResourceSliderTitle").on("click", function() {
+			        $("#ResourceByProgramSliderTitle").removeClass("ActiveTitle");
+			        $("#ResourceSliderTitle").addClass("ActiveTitle");
+			        $("#ResourceByProgramSliderContent").removeClass("ActiveTitle").hide();
+			        $("#ResourceSliderContent").addClass("ActiveTitle").show();
+			    });
+			});
+		</script>
+	</div>
+</div>

@@ -1,0 +1,4 @@
+$("#AjaxLoading").show();
+$("#product_search_list").html("<%= j render :partial => 'product_list', :locals => { :products => @products} %>");
+$("#QuickSearch").show();
+$("#AjaxLoading").hide();

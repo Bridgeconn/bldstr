@@ -1,0 +1,53 @@
+<div class="inner">
+                    
+                    <div class="Content Widest" id="LayoutColumn2">
+                        <div class="Block">
+                            <h1 class="TitleHeading">Thanks for Your Order, sandeep!</h1>
+                            <div class="BlockContent full-width">
+                                <p class="ErrorMessage" style="display:none">
+                                    
+                                </p>
+
+                                <div style="display:none">
+                                    <div class="NotifyMessage">
+                                        <p><span>Your order number is:</span> <a href="https://store.bild.org/account.php?action=view_order&amp;order_id=1870">1870</a></p>
+
+                                        <p style="display:">
+                                            
+                                        </p>
+
+                                        <p style="display:">
+                                            
+                                        </p>
+                                        <p style="display:">
+                                            <br>
+                                            <a href="https://store.bild.org/orderstatus.php">Download the items you ordered</a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div style="display: none">
+                                    <p class="SuccessMessage" style="display:">
+                                        We've just sent you an email confirming your order.
+                                    </p>
+                                </div>
+
+                                
+                                <p class="mtm"><span class="BoldUpper">Your order number is:</span> <a href="https://store.bild.org/account.php?action=view_order&amp;order_id=1870">1870</a></p>
+<p> Instructions to pay for your order are shown below:</p>
+<div class="NotifyMessage">
+    <p class="Bold">Here's How To Pay For Your Order <em class="ProductPrice">($32.91 USD outstanding)</em></p>
+    <p>Orders will ship prior to payment if your account is current. Please make payment within 30 days to “BILD International.” Send to BILD International, 2400 Oakwood Road, Ames, IA 50014. </p>
+</div>
+
+                            </div>
+                        </div>
+                        <div class="full-width">
+                            <div class="Block Moveable Panel" id="SimilarMultiProductsByCustomerViews" style="display:none;"></div>
+                            <div class="txtR mbm">
+                                <a href="https://store.bild.org" class="btn alt">Continue shopping on BILD International</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>

@@ -1,0 +1,175 @@
+<div class="inner">
+	<div class="Block Breadcrumb Moveable Panel" id="AccountBreadcrumb">
+		<ul class="last">
+			<li><%= link_to "Home", root_path %></li>
+			<li>My Account</li>
+		</ul>
+	</div>
+	<h1 class="TitleHeading">My Account</h1>
+	<div class="full-width page-content">
+		<div class="Left" id="LayoutColumn1">
+			<div class="Block AccountMenu Moveable Panel" id="SideAccountMenu">
+				<h4>Manage Your Account</h4>
+				<div class="BlockContent">
+					<%= render 'left_menu' %>
+				</div>
+			</div>
+		</div>
+		<div class="Content" id="LayoutColumn2">
+			<div class="Block Moveable Panel" id="EditAccountForm">
+				<h2>Your Account Details</h2>
+				<div class="BlockContent">
+					<%if flash.empty? && !@user.errors.any?%>
+						<p class="InfoMessage" style="display: ">
+							Make changes to your account details below. Click 'Update My Details' when you're done.
+						</p>
+					<% end %>
+					<% flash.each do |name, msg| %>
+						<p class= <%= (name == 'error') ? "ErrorMessage" : "SuccessMessage" %>>
+							<%= msg if msg.is_a?(String) %>
+						</p>
+					<% end %>
+					<%= form_for(@user, :url => { :action => "update_password" }, html: {id: "edit_user"} ) do |f| %>
+						<%if @user.errors.any? %>
+							<p class="ErrorMessage">
+								<% @user.errors.each do |key, msg| %>
+									<%= key %> <%= msg %><br>
+								<% end %>
+							</p>
+						<% end %>
+						<div class="FormContainer HorizontalFormContainer form">
+							<dl>
+								<dt><span class="Required">*</span> First Name:</dt>
+								<dd>
+									<%= f.text_field :first_name, class: "Textbox Field200" %>
+								</dd>
+								<dt><span class="Required">*</span> Last Name:</dt>
+								<dd>
+									<%= f.text_field :last_name, class: "Textbox Field200" %>
+								</dd>
+								<dt>Company Name:</dt>
+								<dd>
+									<%= f.text_field :company, class: "Textbox Field200" %>
+								</dd>
+								<dt><span class="Required">*</span> Phone Number:</dt>
+								<dd>
+									<%= f.text_field :phone_number, class: "Textbox Field200" %>
+								</dd>
+								<dt>
+									<label for="FormField_1">
+										<span class="Required FormFieldRequired" style="visibility: visible">*</span>
+										<span class="FormFieldLabel">Email Address</span>
+									</label>
+								</dt>
+								<dd>
+									<%= f.email_field :email, class: "Textbox Field200 FormField" %>
+								</dd>
+								<dt>
+									<label for="FormField_2">
+										<span class="Required FormFieldRequired" style="visibility: hidden">*</span>
+										<span class="FormFieldLabel">Password</span>
+									</label>
+								</dt>
+								<dd>
+									<%= f.password_field :password, class: "Textbox Field200 FormField field-xlarge" %>
+									<div class="PasswordRequirements">
+										<div class="PasswordRequirementsContent">
+											Must be at least 8 characters</div>
+									</div>
+									<style>
+										input[type="password"] + .PasswordRequirements {
+										    display: none;
+										    position: relative;
+										    z-index: 500;
+										}
+										
+										.PasswordRequirementsContent {
+										    background-color: #333;
+										    color: #fff;
+										    font-size: 12px;
+										    font-weight: normal;
+										    line-height: 16px;
+										    max-width: 200px;
+										    padding: 10px;
+										}
+										
+										input[type="password"]:focus + .PasswordRequirements {
+										    display: block;
+										}
+										
+										@media screen and (min-width: 480px) {
+										    .PasswordRequirementsContent {
+										        left: 20px;
+										        position: absolute;
+										        top: 10px;
+										    }
+										
+										    .PasswordRequirementsContent:before {
+										        border: 10px solid #333;
+										        border-left-color: transparent;
+										        border-right-color: transparent;
+										        border-top: 0;
+										        content: '';
+										        left: 10px;
+										        position: absolute;
+										        top: -10px;
+										    }
+										}
+									</style>
+									<div class="LittleNotePassword" style="display: ">(Leave blank to remain unchanged)</div>
+								</dd>
+								<dt>
+									<label for="FormField_3">
+										<span class="Required FormFieldRequired" style="visibility: hidden">*</span>
+										<span class="FormFieldLabel">Confirm Password</span>
+									</label>
+								</dt>
+								<dd>
+									<%= f.password_field :password_confirmation, class: "Textbox Field200 FormField" %>
+									<div class="LittleNotePassword" style="display: ">(Leave blank to remain unchanged)</div>
+								</dd>
+								<dt>
+									<label for="FormField_24">
+										<span class="Required FormFieldRequired" style="visibility: hidden">*</span>
+										<span class="FormFieldLabel">Current Password</span>
+									</label>
+								</dt>
+								<dd>
+									<%= f.password_field :current_password, class: "Textbox Field200 FormField" %>
+									<div class="LittleNotePassword" style="display: ">(Leave blank to remain unchanged)</div>
+								</dd>
+								<dt>&nbsp;</dt>
+								<dd><input type="submit" value="Update My Details" class="btn"></dd>
+							</dl>
+						</div>
+					<% end -%>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('#edit_user').validate({ // initialize the plugin
+		rules: {
+	      "user[email]": {
+	          required: true,
+	          email: true
+	      },
+	      "user[password]": {
+	          required: true,
+	          minlength: 8
+	      },
+	
+	      "user[first_name]": {
+	        required: true,
+	      },
+	      "user[last_name]":{
+	        required: true
+	      },
+	      "user[phone_number]":{
+	        required: true
+	      }
+	  }
+	});
+</script>

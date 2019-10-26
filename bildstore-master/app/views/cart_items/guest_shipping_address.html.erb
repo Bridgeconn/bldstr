@@ -1,0 +1,163 @@
+<div class="inner">
+	<h1 class="TitleHeading">Secure Checkout</h1>
+	<div class="Content Widest" id="LayoutColumn1">
+		<div class="full-width">
+			<div class="Block Moveable Panel" id="ChooseShippingAddress">
+				<h3>Shipping Details</h3>
+				<div class="BlockContent">
+					<p class="ErrorMessage" style="display: none">
+					</p>
+					<%= form_with model: current_order, local: true, id: "guest_shipping_form" do |f| %>
+						<div class="FormContainer HorizontalFormContainer form">
+							<dl>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">First Name</span>
+								</dt>
+								<dd>
+									<%= f.text_field :shipping_first_name, :'aria-required' => "true",  class: "Textbox Field200 FormField", autocomplete: false, autocorrect: false, autocapitalize: false, autofill: false %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Last Name</span>
+								</dt>
+								<dd>
+									<%= f.text_field :shipping_last_name, :'aria-required' => "true",  class: "Textbox Field200 FormField", autocomplete: false, autocorrect: false, autocapitalize: false, autofill: false %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: hidden">*</span> <span class="FormFieldLabel">Company Name</span>
+								</dt>
+								<dd>
+									<%= f.text_field :shipping_company, :'aria-required' => "false", 
+												 class: "Textbox Field200 FormField" %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Country</span>
+								</dt>
+								<dd>
+									<div class="selector fixedWidth" id="uniform-FormField_11"><span style="user-select: none;" id="country_text"><%= @country.name %></span>
+										<%= f.select(:shipping_country, Country.all, {:selected => @order.billing_country},  id: "country", class: "Field200 FormField field-xlarge", "aria-required": true ) %>
+									</div>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Zip/Postcode</span>
+								</dt>
+								<dd>
+									<%= f.text_field :shipping_zip, 'aria-required': "true" , class: "Textbox Field45 FormField", autocomplete: false, autocorrect: false, autocapitalize: false, autofill: false %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">City</span>
+								</dt>
+								<dd>
+									<%= f.text_field :shipping_city, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_city" %>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">State/Province</span>
+								</dt>
+								<dd>
+									<div class="selector" id="uniform-FormField_12" style="width: 192px;">
+										<span style="user-select: none;" id="state_text"><%= (@order.shipping_country.present? && @order.shipping_state.present?) ? state_name(@order.shipping_country, @order.shipping_state) : "Choose a State" %></span>
+										<%=f.select(:shipping_state, Country["IN"].states.keys.collect{|state_key| [Country["IN"].states[state_key]["name"], state_key]}, {:include_blank => "Choose a State" },  id: "state") %>
+									</div>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Address Line 1</span>
+								</dt>
+								<%= hidden_field_tag :address_type, "shipping" %>
+								<dd>
+									<%= f.text_field :shipping_address_1, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_add1" %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: hidden">*</span> <span class="FormFieldLabel">Address Line 2</span>
+								</dt>
+								<dd>
+									<%= f.text_field :shipping_address_2, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input" %>
+									<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+								</dd>
+								<dt>
+									<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Phone Number</span>
+								</dt>
+								<dd>
+									<%= f.text_field :shipping_phone, 'aria-required': "true" , class: "Textbox Field200 FormField ui-autocomplete-input user_phone" %>
+								</dd>
+								<dt>&nbsp;</dt>
+								<dd><input type="submit" class="billButton btn" value="Ship to this Address"></dd>
+							</dl>
+						</div>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#guest_shipping_form').validate({ // initialize the plugin
+	            rules: {
+	                "order[shipping_email]": {
+	                    required: true,
+	                    email: true
+	                },
+	                "order[shipping_first_name]":{
+	                  required: true
+	                },
+	                "order[shipping_last_name]":{
+	                  required: true
+	                },
+	                "order[shipping_zip]":{
+	                  required: true
+	                },
+	                "order[shipping_city]":{
+	                  required: true
+	                },
+	                "order[shipping_country]":{
+	                    required: true
+	                },
+	                "order[shipping_state]":{
+	                    required: true
+	                },
+	                "order[shipping_address_1]":{
+	                  required: true
+	                },
+	                "order[shipping_phone]":{
+	                  required: true
+	                },
+	                messages: {
+	                   "order[shipping_state]": { valueNotEquals: "Please select state!" }
+	               }
+	            }
+	        });
+	
+			$("#country").change(function(){
+	           $("#AjaxLoading").show();
+	           $("#country_text").html($("#country option:selected").text())
+	          var state = "";
+	          $.ajax({
+	            url: "/change/country",
+	            data: "country_2_code="+$(this).val(),
+	            success: function(res){
+	            	$("#state").html('');
+	              $("#AjaxLoading").hide();
+	              if(res.states){
+	                Object.keys(res.states).map(function(key, index){
+	                  state += '<option value='+key+'>'+res.states[key].name+'</option>'
+	                })
+	              }
+	              $("#state").html(state);
+	              $("#state_text").html("Choose a State");
+	            },
+	            error: function(res){
+	               $("#AjaxLoading").hide();
+	              alert("Unable to change country. Please try later");
+	            }
+	          })
+	        });
+	
+	});
+	
+	  $("#state").change(function(){
+	    $("#state_text").html($(this).find(":selected").text());
+	  });
+</script>

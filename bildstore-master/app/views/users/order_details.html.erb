@@ -1,0 +1,171 @@
+<div class="inner">
+	<div class="Block Breadcrumb Moveable Panel" id="AccountBreadcrumb">
+		<ul class="last">
+			<li><%= link_to "Home", root_path %></li>
+			<li>My Account</li>
+		</ul>
+	</div>
+	<h1 class="TitleHeading">My Account</h1>
+	<div class="full-width page-content">
+		<div class="Left" id="LayoutColumn1">
+			<div class="Block AccountMenu Moveable Panel" id="SideAccountMenu">
+				<h4>Manage Your Account</h4>
+				<div class="BlockContent">
+					<%= render 'left_menu' %>
+				</div>
+			</div>
+		</div>
+		<div class="Content" id="LayoutColumn2">
+			<div class="Block Moveable Panel AccountOrder" id="AccountOrder">
+				<h3>BILD International India Store - Order #<%= @order.id %></h3>
+				<div class="BlockContent">
+					<p class="InfoMessage">
+						Your order details are shown below.
+					</p>
+					<p class="Meta">
+						<span style="display: ">
+							<strong>Order Status:</strong> <%= @order.status %><br>
+						</span>
+						<strong>Order Date:</strong> <%= formatted_date(@order.created_at) %> @ <%= @order.created_at.strftime("%I:%M %p") %><br>
+						<strong>Order Total: <%= number_to_currency(@order.total_amount) %></strong>
+					</p>
+					<hr>
+					<div class="BillingDetails">
+						<h3>Billing Details</h3>
+						<strong><%= @order.billing_full_name %></strong>
+						<br>
+						<%= @order.billing_company %>
+						<br>
+						<%= @order.billing_address_1 %><br>
+						<%= @order.billing_city %>, <%= state_name(@order.billing_country, @order.billing_state) %> <%= @order.billing_zip %><br>
+						<%= country_name(@order.billing_country) %>
+						<div></div>
+					</div>
+					<div class="ShippingDetails" style="">
+						<h3>Shipping Details</h3>
+						<strong><%= @order.shipping_full_name %></strong>
+						<br>
+						<%= @order.billing_company %>
+						<br>
+						<%= @order.shipping_address_1 %><br>
+						<%= @order.shipping_city %>, <%= state_name(@order.shipping_country, @order.shipping_state) %> <%= @order.shipping_zip %><br>
+						<%= country_name(@order.shipping_country) %>
+						<div></div>
+					</div>
+					<hr class="clear">
+					<form action="#" method="post" onsubmit="return ValidateReorderForm(this);" id="ReorderForm">
+						<%if @order.cart_items.size > 0 %>
+							<h3>Order #<%= @order.id %> Contained the Following Items:</h3>
+							<table cellspacing="0" cellpadding="0" class="CartContents">
+								<thead style="">
+									<tr>
+										<th>Item Details</th>
+										<th style="width: 15%; text-align: right;">Price</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr class="SubTotal">
+										<td>
+											<div>Subtotal:</div>
+										</td>
+										<td>
+											<div><em class="ProductPrice"><%= number_to_currency(@order.subtotal)%></em></div>
+										</td>
+									</tr>
+									<!-- <tr class="SubTotal">
+										<td>
+											<div>Shipping:</div>
+										</td>
+										<td>
+											<div><em class="ProductPrice">$5.91</em></div>
+										</td>
+									</tr> -->
+									<tr class="SubTotal">
+										<td>
+											<div>Grand Total:</div>
+										</td>
+										<td>
+											<div><em class="ProductPrice"><%= number_to_currency(@order.total_amount) %></em></div>
+										</td>
+									</tr>
+								</tfoot>
+								<tbody>
+									<% @order.cart_items.each do |item| %>
+										<tr>
+											<td class="OrderItem1">
+												<%#= item.product_name %>
+												<%= item.quantity %> x <%= link_to item.product_name, product_path(item.product), target: "_blank" %>
+												<!-- <a href="http://store.bild.org/envisioning-fruitful-lifework/" target="_blank">Envisioning Fruitful LifeWork</a> -->
+												<br>
+												<div style="font-style:italic; padding-left:30px;"></div>
+												<!-- <div style="display: none" class="WrappingOptions">
+													Gift Wrapping: 
+												</div>
+												<div id="ItemMessage_3164" class="OrderItemMessage" style="display:none;">
+												</div> -->
+												<div class="ExpectedReleaseDate" style="display:none;"></div>
+											</td>
+											<td class="OrderItem1" align="right"><em class="ProductPrice"><%= number_to_currency(item.product_price) %></em></td>
+										</tr>
+									<% end %>
+								<% end %>
+							</tbody>
+						</table>
+						<!-- <input type="hidden" name="orderid" value="1870"> -->
+						<!-- <input type="submit" class="btn" title="Reorder" value="Reorder"> -->
+						<input type="button" class="btn" onclick="print_invoice(1870)" value="Print Invoice">
+						<div class="clear"></div>
+					</form>
+					<div class="Block Moveable Panel" id="AccountOrderShipments" style="display:none;"></div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				//<![CDATA[
+					// If the product for an order no longer exists, tell the customer
+					function product_removed() {
+						alert("That item was removed from our store and is no longer available for order.");
+					}
+					function product_giftcertificate() {
+						alert("Unfortunately gift certificates can not be reordered. Click on the 'Gift Certificates' link to purchase a new one.");
+					}
+				
+					function print_invoice(order_id) {
+						var l = screen.availWidth / 2 - 450;
+						var t = screen.availHeight / 2 - 320;
+						// var win = window.open('https://store.bild.org/account.php?action=print_invoice&order_id='+order_id, 'orderInvoice', 'width=900,height=650,left='+l+',top='+t+',scrollbars=1');
+						var win = window.open('<%= invoice_order_url(@order.id)%>',  'order_invoice', 'width=900,height=650,left='+l+',top='+t+',scrollbars=1');
+					}
+				
+					function ShowItemMessage(checkbox, item_id)
+					{
+						//alert($(checkbox).attr('class'));
+						if($(checkbox).attr('class') == "Disabled") {
+							$('#ItemMessage_'+item_id).show();
+				
+							$(checkbox).attr("checked",false);
+						}
+						return false;
+					}
+				
+					function ValidateReorderForm(form)
+					{
+						var checkboxes = $(form).find('input[type=checkbox]:checked');
+						if(checkboxes.length <= 0) {
+							alert('Please select one or more items to reorder.');
+							return false;
+						}
+						checkboxes.each(function() {
+							if($(this).attr('class') == 'Disabled') {
+								alert('One or more selected items can\'t be reordered.');
+								return false;
+							}
+						});
+						return true;
+					}
+				
+				//]]>
+			</script>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>

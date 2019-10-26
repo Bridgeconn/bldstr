@@ -1,0 +1,42 @@
+<div class="inner">
+	<%if @childrens.size > 0 %>
+		<div class="Block Breadcrumb Moveable Panel" id="PageBreadcrumb">
+			<ul class="last">
+				<li><a href="<%= root_path %>">Home</a></li>
+				<li><%= raw @category.name %></li>
+			</ul>
+		</div>
+		<div class="Left" id="LayoutColumn1">
+			<div class="Block Moveable Panel" id="SideSubPageList" style="display:none;">
+			</div>
+		</div>
+		<div class="Content" id="LayoutColumn2">
+			<div id="FirstPrinciplesSeriesContent" class="BlockContent PageContent SeriesContent">
+				<div id="SeriesHeading">
+					<h1><%= raw @category.name %></h1>
+					<p><%= raw @category.description %></p>
+					<br>
+				</div>
+				<% @childrens.each do |sub_category| %>
+					<div class="SeriesColumn <%= @category.children.size >=3 ? "one-quarter" : "one-half" %>">
+						<%= link_to image_tag(sub_category.image_url, style: 'height: 100px !important;width: auto !important;'), category_product_product_path(sub_category) %>
+						<h2><%= raw sub_category.name %></h2>
+						<p><%= raw sub_category.description %></p>
+						<%if sub_category.products.present? %>
+							<ul class="SeriesColumnItems">
+								<% sub_category.products.each do |product| %>
+									<li>
+										<%= link_to product.name , product_path(product) %>
+									</li>
+								<% end %>
+							</ul>
+						<% end %>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	<% else %>
+		<%= render partial: '/products/product_listing', :locals => { :category => @category } %>
+	<% end -%>
+	<div class="clear"></div>
+</div>

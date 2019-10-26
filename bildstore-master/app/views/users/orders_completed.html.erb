@@ -1,0 +1,68 @@
+<div class="inner">
+	<div class="Block Breadcrumb Moveable Panel" id="AccountBreadcrumb">
+		<ul class="last">
+			<li><a href="/">Home</a></li>
+			<li>My Account</li>
+		</ul>
+	</div>
+	<h1 class="TitleHeading">My Account</h1>
+	<div class="full-width page-content">
+		<div class="Left" id="LayoutColumn1">
+			<div class="Block AccountMenu Moveable Panel" id="SideAccountMenu">
+				<h4>Manage Your Account</h4>
+				<div class="BlockContent">
+					<%= render 'left_menu' %>
+				</div>
+			</div>
+		</div>
+		<div class="Content" id="LayoutColumn2">
+			<div class="Block Moveable Panel AccountOrders" id="AccountOrders">
+				<h2>Your Completed Orders</h2>
+				<div class="BlockContent">
+					<%if @orders.size > 0 %>
+						<div>
+							<p class="InfoMessage">
+								Your completed orders with us are shown below. Click 'View Order' to view an orders details.
+							</p>
+							<ul class="AccountOrderStatusList">
+								<% @orders.each do |order| %>
+									<li class="li-list">
+										<div class="btns">
+											<%= link_to "View order details", order_details_user_path(order), class: "btn", style: "color: #fff !important" %>
+										</div>
+										<h4>Order #<%= order.id %></h4>
+										<p class="Meta">
+											Order Date: <%= formatted_date(order.created_at) %>
+										</p>
+										<p>This order is marked as <strong><em>Completed</em></strong></p>
+										<div style="display:non">
+											<p>The outstanding balance of your order is <strong><em class="ProductPrice"><%= number_to_currency(order.total_amount) %></em></strong></p>
+										</div>
+										<br>
+										<ul class="OrderItemList">
+											<% order.cart_items do |item| %>
+												<strong>Your Order Contains:</strong>
+												<li>
+													<%= item.product_name %>
+												</li>
+											<% end %>
+										</ul>
+									</li>
+								<% end %>
+							</ul>
+							<br>
+							<div style="float:right;">
+								<%= paginate @orders %>
+							</div>
+						</div>
+					<% else %>
+						<p class="InfoMessage" style="display:">
+							You don't have any completed orders with us. When you do, they will appear on this page.
+						</p>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>

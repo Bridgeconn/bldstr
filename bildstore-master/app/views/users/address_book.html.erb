@@ -1,0 +1,96 @@
+<div class="inner">
+	<div class="Block Breadcrumb Moveable Panel" id="AccountBreadcrumb">
+		<ul class="last">
+			<li><a href="/">Home</a></li>
+			<li><a href="<%= user_account_users_path %>">My Account</a></li>
+			<li>Your Address Book</li>
+		</ul>
+	</div>
+	<h1 class="TitleHeading">My Account</h1>
+	<div class="full-width page-content">
+		<div class="Left" id="LayoutColumn1">
+			<div class="Block AccountMenu Moveable Panel" id="SideAccountMenu">
+				<h4>Manage Your Account</h4>
+				<div class="BlockContent">
+					<ul class="side-menu">
+						<%= render 'left_menu' %>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="Content" id="LayoutColumn2">
+			<div class="Block Moveable Panel" id="ChooseShippingAddress">
+				<a title="Add Address" class="icon-add" href="<%= new_address_path %>"></a>
+				<h2>Your Address Book</h2>
+				<!-- This multi-step list is hidden in the address book section -->
+				<ul class="multiStep">
+					<li class="Completed">
+						<h4>
+							<a href="">Billing Address</a>
+						</h4>
+					</li>
+					<li class="ActivePage">
+						<h4>Shipping Address</h4>
+					</li>
+					<li class="">
+						<h4>Shipping Method</h4>
+					</li>
+					<li class="">
+						<h4>Order Confirmation</h4>
+					</li>
+				</ul>
+				<%if @addresses.size > 0 %>
+					<p>All addresses in your address book are shown below. You can also <a href="">add a new address.</a></p>
+					<div class="BlockContent">
+						<div class="TabContainer">
+							<ul class="TabNav" style="display: none">
+								<li id="AddressSingle" class="Active"><a href="#">Ship all items to the same address</a></li>
+								<li id="AddressMultiple" class=""><a href="#">Ship items to different addresses</a></li>
+							</ul>
+							<div class="TabContent" id="TabContentAddressSingle" style="">
+								<div class="">
+									<ul class="ShippingAddressList">
+										<% @addresses.each do |address| %>
+											<li>
+												<p class="UtilityLinks">
+													<a title="Edit" href="<%= edit_address_path(address) %>" class="icon-edit"></a>
+													<%= link_to "", address_path(address), class: "icon-delete", title: "Delete", data: { confirm: 'Are you sure you want to delete this shipping address?' }, method: :delete %>
+												</p>
+												<h4><%= address.full_name.try(:upcase) %></h4>
+												<p class="NoMarginBottom">
+													<%= address.company %><br>
+													<%= address.address_line1 %><br>
+													<%= address.address_line2 %><br>
+													<%= address.city %>, <%= state_name(address.country, address.state) %> , <%= address.postcode %><br>
+													<%= country_name(address.country) %><br>
+													Phone: <%= address.phone_number %>
+												</p>
+											</li>
+										<% end %>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				<% else %>
+					<p>You do not currently have any addresses saved in your address book. Would you like to <a href="<%= new_address_path %>">add a new address?</a></p>
+					<div class="BlockContent">
+						<div class="TabContainer">
+							<ul class="TabNav" style="display: none">
+								<li id="AddressSingle" class="Active"><a href="">Ship all items to the same address</a></li>
+								<li id="AddressMultiple" class=""><a href="">Ship items to different addresses</a></li>
+							</ul>
+							<div class="TabContent" id="TabContentAddressSingle" style="">
+								<div class="">
+									<ul class="ShippingAddressList">
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				<% end -%>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>

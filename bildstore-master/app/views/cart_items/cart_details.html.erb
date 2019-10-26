@@ -1,0 +1,161 @@
+<div class="inner">
+  <div class="Content Widest" id="LayoutColumn1">
+    <div class="Block Moveable Panel Breadcrumb" id="CartBreadcrumb">
+    	<!-- <ul class="last">
+    		<li><a href="http://store.bild.org/">Home</a></li><li><a href="javascript:history.go(-1)">... Previous Page</a></li><li>Your Shopping Cart</li>
+    	</ul> -->
+    </div>
+    <div class="Block Moveable Panel" id="CartHeader">
+        <h1 class="TitleHeading">
+    		Your Shopping Cart
+    	</h1>
+    </div>
+    <% if @cart_items.size > 0 %>     
+    <div class="txtR" style=";">
+      <%if current_user %>
+        <a class="btn" href="<%= choose_billing_address_cart_items_path %>"  title="Click here to proceed to checkout">Proceed To Checkout</a>
+      <% else %>
+        <%= link_to "Proceed To Checkout", checkout_without_login_cart_items_path, class: "btn" %> 
+      <% end %>
+    </div>
+    <% end %>
+
+
+  <div class="fullwidth">
+    <%if flash[:notice]  %>
+      <div class="Block Moveable Panel" id="CartStatusMessage">
+        <div class="SuccessMessage">
+            <%= flash[:notice] %>
+        </div>
+      </div>
+    <% end %>
+    <div class="Block Moveable Panel" id="CartContent">
+      <div class="BlockContent">
+      <% if @cart_items.size > 0 %>     
+        <div style="display: ">
+            <table class="CartContents Stylize General" cellspacing="0" cellpadding="0">
+                <thead>
+                    <tr class="First Last Odd Even">
+                        <th colspan="2">Cart Items</th>
+                        <th>Qty</th>
+                        <th>Item Price</th>
+                        <th>Total</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr class="SubTotal First">
+                        <td colspan="5" class="Even"><div>Subtotal</div></td>
+                        <td class="Odd"><div><em class="ProductPrice"><%= number_to_indian_currency(current_order.cart_total_price) %></em></div></td>
+                    </tr>
+                    
+                    <tr class="SubTotal Odd Even" style="">
+                        <td colspan="6" class="Even">
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr style="display: none" class="SubTotal Odd Even">
+                        <td colspan="5" class="Odd"><div>Handling</div></td>
+                        <td class="Even"><div><em class="ProductPrice"></em></div></td>
+                    </tr>
+                    
+                    
+                    <tr class="SubTotal gtotal Last">
+                        <td colspan="6" class="Odd"><div>Grand Total <em class="ProductPrice"><%= number_to_indian_currency(current_order.cart_total_price) %></em></div></td>
+                    </tr>
+                    
+                </tfoot>
+                <tbody>
+                   
+                    <% @cart_items.each do |cart_item| %>
+                    <tr class="First Last Odd Even">
+                	   <td class="CartThumb Even" style="">
+                        <%= link_to image_tag(cart_item.product_image.url), product_path(cart_item.product) %>
+                			 <!-- <a href="http://store.bild.org/becoming-a-disciple/"><img src="https://cdn3.bigcommerce.com/s-s89jjs/products/76/images/271/S1_B1_thumb__84251.1441921692.190.285.jpg?c=2"></a>&nbsp; -->
+                		  </td>
+                  		<td class="ProductName <%=cycle('Odd', 'Even') %>" colspan="1">
+                  			<a href="javascript:void(0);"><%= cart_item.product_name %></a>
+                  			<br>
+                  		</td>
+                  		<td align="center" class="CartItemQuantity Even">
+                  			<span style="padding: 0; margin: 0;">
+                        <%= form_with model: cart_item, name:"cartForm", id: "cartForm", onsubmit: "return Cart.ValidateQuantityForm(this);" do |f| %>
+                          <%= f.text_field :quantity, value: cart_item.quantity.to_i, class: "qtyInput quantityInput", size: 3 %>
+                          <%= f.hidden_field :product_id, value: cart_item.product.id %>
+                        <% end %>
+                  		</td>
+                  		<td align="center" class="CartItemIndividualPrice Odd">
+                  			<%= number_to_indian_currency(cart_item.product_price) %>
+                  		</td>
+                  		<td align="right" class="CartItemTotalPrice Even">
+                        <em class="ProductPrice"><%= number_to_indian_currency(cart_item.total_price) %></em>
+                      </td>
+                  		<td class="Odd">
+                  			 <div style="">
+                          <%= link_to "", cart_item_path(cart_item), method: :delete, data: {confirm: "Are your sure you want to remove this item from your cart"}, class: "CartRemoveLink", title: "Remove" %>
+                  			</div>
+                  		</td>		
+  	               </tr>
+                    <% end %>
+                </tbody>
+            </table>
+            <div style="display: none">
+                <input class="btn" type="submit" value="Update Cart" title="Update">
+            </div>
+
+            <div class="ProceedToCheckout">
+            <div class="CheckoutButton" style="">
+                <% if current_user %>
+                  <a class="btn" href="<%= choose_billing_address_cart_items_path %>"  title="Click here to proceed to checkout">Proceed To Checkout</a>
+                <% else %>
+                  <%= link_to "Proceed To Checkout", checkout_without_login_cart_items_path, class: "btn" %> 
+                <% end %>
+            </div>
+            <div class="AlternativeCheckout" style="display: none">
+                <p class="PTB20"><span style=""> or </span><a href="#"><strong>check out with multiple addresses</strong></a></p>
+            </div>
+            
+        </div>
+
+        <div class="KeepShopping">
+          <%= link_to "Click here to keep shopping", root_path, class: "btn alt" %>
+        </div>
+        <div class="clear"></div>
+
+        </div>
+      <% else %>
+        <div style="display: ">
+            <p class="InfoMessage">
+                There are no products in your cart.
+            </p>
+            To add a product to your cart, first browse for it or use the search box and then click its "Add to Cart" button.
+            <br>
+            <a href="<%= root_path %>">Continue Shopping</a> on the BILD International home page.
+        </div>
+      <% end %>
+        <div class="clear"></div>
+          <div style="display: none">
+            <p class="InfoMessage">
+                There are no products in your cart.
+            </p>
+            To add a product to your cart, first browse for it or use the search box and then click its "Add to Cart" button.
+            <br>
+            <a href="<%= root_path %>">Continue Shopping</a> on the BILD International home page.
+        </div>
+    </div>
+  </div>
+  <div class="CartCode cf"></div>
+  </div>
+</div>
+<div class="clear"></div>
+</div>
+<%= javascript_include_tag "cart.js" %>
+<script>
+jQuery(document).ready(function(){
+  $('.quantityInput').on('change', function() {
+    Cart.UpdateQuantity(this.form);
+  });
+});
+</script>
+

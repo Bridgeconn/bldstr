@@ -1,0 +1,36 @@
+<div class="inner">
+	<div class="Content Widest" id="LayoutColumn1">
+		<div class="Block Moveable Panel Breadcrumb" id="CartBreadcrumb">
+			<!-- <ul class="last">
+    		<li><a href="http://store.bild.org/">Home</a></li><li><a href="javascript:history.go(-1)">... Previous Page</a></li><li>Your Shopping Cart</li>
+    	</ul> -->
+		</div>
+		<div class="Block Moveable Panel" id="CartHeader">
+			<h1 class="TitleHeading">
+				Resend confirmation instructions
+			</h1>
+		</div>
+		<div class="Block Moveable Panel" id="CartContent">
+			<div class="BlockContent">
+				<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+					<%= devise_error_messages! %>
+					<div class="FormContainer HorizontalFormContainer form">
+						<div class="box borderB">
+							<dt>
+								<span class="Required FormFieldRequired" style="visibility: visible">*</span> <span class="FormFieldLabel">Email Address</span>
+							</dt>
+							<dd>
+								<%= f.email_field :email, 'aria-required': "true" , class: "Textbox Field200 FormField user_email", autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email)%><br>
+							</dd>
+						</div>
+						<div class="box">
+							<p class="Submit">
+								<input type="submit" class="btn alt" id="new_user" value="Resend confirmation instructions">
+							</p>
+						</div>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,131 @@
+<div class="inner">
+	<h1 class="TitleHeading">Secure Checkout</h1>
+	<div class="Content Widest" id="LayoutColumn1">
+		<div class="full-width">
+			<div class="Block Moveable Panel ExpressCheckoutBlock" id="ConfirmOrder">
+				<%= form_with scope: :post, url: orders_path, html: { onsubmit: "return confirm_payment_provider()"}, local: true    do %>
+					<input type="hidden" name="action" value="pay_for_order">
+					<h2>Please Review Your Order Before Continuing</h2>
+					<ul class="multiStep">
+						<li class="Completed">
+							<h4><a href="<%= choose_billing_address_cart_items_path%>">Billing Address</a></h4>
+						</li>
+						<li class="Completed">
+							<h4><a href="<%= choose_shipping_address_cart_items_path %>">Shipping Address</a></h4>
+						</li>
+						<!-- <li class="Completed"><h4><a href="https://store.bild.org/checkout.php?action=choose_shipper">Shipping Method</a></h4></li> -->
+						<li class="ActivePage">
+							<h4>Order Confirmation</h4>
+						</li>
+					</ul>
+					<div class="BlockContent">
+						<p class="ErrorMessage" style="display: none">
+						</p>
+						<p class="SuccessMessage" style="display: none">
+						</p>
+						<div style="display: ">
+							<div class="BillingDetails">
+								<h4>Billing Address</h4>
+								<p>
+									<strong><%= @order.billing_full_name %></strong>
+									<br>
+									<%= @order.billing_company %>
+									<br>
+									<%= @order.billing_address_1 %><br>
+									<%= @order.billing_city %>, <%= state_name(@order.billing_country, @order.billing_state) %> <%= @order.billing_zip %><br>
+									<%= country_name(@order.billing_country)  %>
+								</p>
+								<div>Phone: <%= @order.billing_phone %></div>
+								<p></p>
+							</div>
+							<div class="ShippingDetails" style="">
+								<h4>Shipping Address</h4>
+								<p>
+									<strong><%= @order.shipping_full_name %></strong>
+									<br>
+									<%= @order.shipping_company %>
+									<br>
+									<%= @order.shipping_address_1 %><br>
+									<%= @order.shipping_city %>, <%= state_name(@order.shipping_country, @order.shipping_state) %> <%= @order.shipping_zip %><br>
+									<%= country_name(@order.shipping_country) %>
+								</p>
+								<div>Phone: <%= @order.shipping_phone %></div>
+								<p></p>
+							</div>
+							<hr class="clear">
+							<div class="OrderContents">
+								<h4>Your Order Contains...</h4>
+								<table class="CartContents Stylize General" cellspacing="0" cellpadding="0">
+									<thead>
+										<tr class="First Last Odd Even">
+											<th style="white-space: nowrap; width: 435px">Cart Items</th>
+											<th style="white-space: nowrap; text-align: center;">Qty</th>
+											<th style="white-space: nowrap; text-align: right;">Item Price</th>
+											<th style="white-space: nowrap; text-align: right; width: 130px;">Item Total</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr class="SubTotal First uno">
+											<td colspan="3" class="Even">
+												<div>
+													<strong>Subtotal</strong>
+												</div>
+											</td>
+											<td class="Odd">
+												<div>
+													<em class="ProductPrice"><%= number_to_indian_currency(current_order.cart_total_price) %></em>
+												</div>
+											</td>
+										</tr>
+										<tr class="SubTotal">
+											<td colspan="3" class="Even">
+												<div>
+													<strong>Grand Total</strong>
+												</div>
+											</td>
+											<td class="Odd">
+												<div>
+													<em class="ProductPrice"><%= number_to_indian_currency(current_order.cart_total_price) %></em>
+												</div>
+											</td>
+										</tr>
+										<!-- This is being injected into the GLOBAL_totals markup. -->
+									</tfoot>
+									<tbody>
+										<% @cart_items.each do |cart_item| %>
+											<tr class="First Last">
+												<td class="<%= cycle('Odd', 'Even') %>">
+													<strong><%= cart_item.product_name %></strong>
+													<br>
+													<span class="Availability"></span>
+												</td>
+												<td style="text-align: center;" class="Even"><%= cart_item.quantity %></td>
+												<td style="text-align: right;" class="Odd">
+													<%= number_to_indian_currency(cart_item.product_price) %>
+												</td>
+												<td style="text-align: right;" class="Even"><em class="ProductPrice"> <%= number_to_indian_currency(cart_item.total_price) %></em></td>
+											</tr>
+										<% end %>
+									</tbody>
+								</table>
+							</div>
+							<div style="display:;" class="CheckoutHideOrderTermsAndConditions">
+								<hr class="clear">
+								<h5 class="PTB20">Shipping Notes:</h5>
+								<div class="PL20" style="">
+								</div>
+								<div class="PL20 MT10">
+									<label for="AgreeTermsAndConditions">* Shipping and Handling charges extra. The cost will be intimated via mail or phone upon placing the order</label>
+								</div>
+							</div>
+							<p class="FloatRight">
+								<input id="bottom_payment_button" type="submit" value="Next" class="btn">
+							</p>
+						</div>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,136 @@
+<div class="header">
+	<div class="inner">
+		<div id="AjaxLoading">
+			<div class="ajax-loader">
+				<%=image_tag "loadera239.png" , alt: "" %>&nbsp;Loading... Please wait...
+			</div>
+		</div>
+		<div id="Header">
+			<div class="inner">
+				<div id="ToggleMenu" class="fa fa-bars normal"></div>
+				<div class="header-logo">
+					<a href="/"><%=image_tag "bild_store_logo.png", border: "0" ,id:"LogoImage" , alt: "BILD International India" %></a>
+				</div>
+				<div class="header-secondary">
+					<div id="SearchForm" class="cf">
+						<%=form_with url: search_product_products_path, html:{method: "get",id: "search_form"},  onsubmit: "return check_small_search_form()" do |f| %>
+							<label for="search_query">Search Materials</label>
+							<!-- <input type="text" name="search_query" id="search_query" class="Textbox autobox default" value="Search Materials" autocomplete="off"> -->
+							<%= f.text_field :query, class: "Textbox autobox default", placeholder: "Search Materials", autocomplete: :off, id: "search_query" %>
+							<input type="submit" class="Button" value="" name="Search" title="Search">
+						<% end %>
+					</div>
+				</div>
+				<div class="TopMenu">
+					<div class="inner">
+						<ul style="display:">
+							<li style="display:">
+								<a href="<%= new_user_session_path %>"><%= image_tag "top_login_icona239.png" , width: "25" , height: "25" %>
+								</a>
+								<div id="accountLink">
+									<%= link_to "", new_user_session_path %>
+									<%if user_signed_in? %>
+										<%= link_to "Sign Out", destroy_user_session_path, class: "signOut", method: :delete %>
+										<span>
+											<span class="myAccountDivider TopDivider" style="">
+												<%= image_tag "top_item_divider.png", width: 9, height: 40 %>
+											</span>
+											<%= link_to "My Account", user_account_users_path %>
+										</span>
+									<% else %>
+										<%= link_to "Register/Login", new_user_session_path, class: "signIn" %>
+									<% end %>
+								</div>
+								<span>
+									<span class="myAccountDivider TopDivider" style="display:none;"><%= image_tag "top_item_divider.png" , width: "9" , height: "40" %></span>
+								</span>
+								<span class="TopDivider"><%= image_tag "top_item_divider.png" , width: "9" , height: "40" %></span>
+							</li>
+							<li class="last CartLink js-drawermenu-cart" style="display:">
+								<a href="<%= cart_details_cart_items_path %>" title="View Cart"><%= image_tag "top_cart_icona239.png" , width: "25" , height: "25" %><span>Cart </span><span class="ItemNumber">(<%= current_order ? current_order.cart_items.size : 0 %>)</span></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div id="cart-amount">
+					<a href="javascript:void(0);" class="Cart"><span class="bag-handle"></span><span class="total"></span></a>
+				</div>
+			</div>
+		</div>
+		<div class="PageMenu">
+			<div class="inner">
+				<div class="CategoryList" id="SideCategoryList">
+					<div class="SideCategoryListFlyout">
+						<%if available_categories.size > 0 %>
+							<% available_categories.each do |category| %>
+								<ul class="sf-menu sf-vertical sf-js-enabled">
+									<li class="">
+										<a href="#" class="sf-with-ul hasSub"><%= category.name %><span class="sf-sub-indicator"> »</span></a>
+										<ul style="visibility: hidden; display: none;">
+											<% category.children.active_category.each do |child_category| %>
+												<li>
+													<%= link_to child_category.name, category_path(child_category), class: "sf-with-ul" %>
+												</li>
+											<% end %>
+										</ul>
+									</li>
+									<!-- <li class="">
+								<a href="#" class="sf-with-ul hasSub">Translations<span class="sf-sub-indicator"> »</span></a>
+								<ul style="visibility: hidden; display: none;">
+									<li><a href="../first-principles-french/index.html" class="sf-with-ul">French</a></li>
+									<li><a href="../spanish/index.html" class="sf-with-ul">Spanish</a></li>
+								</ul>
+							</li>
+							<li class="">
+								<a href="../training-packages/index.html" class="sf-with-ul hasSub">Training Packages<span class="sf-sub-indicator"> »</span></a>
+								<ul style="visibility: hidden; display: none;">
+								</ul>
+							</li> -->
+								</ul>
+							<% end %>
+						<% end %>
+						<div class="afterSideCategoryList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+	    if (typeof $.fn.superfish == "function") {
+	        $("ul.sf-menu").superfish({
+	            delay: 10,
+	            dropShadows: false,
+	            speed: "fast"
+	        })
+	        .find("ul")
+	        .bgIframe();
+	    }
+	})
+</script>
+<script language="javascript" type="text/javascript">
+	//<![CDATA[
+	        $(document).ready(function() {
+	            // create the dropdown for mobile
+	            $('.SubCategoryList ul li').each(function(){
+	                $('.SubCategoryList select').append(new Option($(this).find('a').html(), $(this).find('a').attr('href')));
+	            });
+	            $('.SubCategoryList.mobile select option:first').attr('selected','selected');
+	            $('.SubCategoryList.mobile select').prev().html($('.SubCategoryList.mobile select option:first').html());
+	
+	            if( !$('.SubCategoryList ul li').length ) {
+	                $('.SubCategoryList.mobile').hide();
+	            }
+	
+	            // page redirect on change
+	            $('.SubCategoryList.mobile select').change(function(){
+	                var href = $(this).find('option:selected').val();
+	                if(href!='') {
+	                    window.location.replace(href);
+	                    window.location.href = href;
+	                }
+	            });
+	        });
+	        //]]>
+</script>

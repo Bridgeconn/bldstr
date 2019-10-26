@@ -1,0 +1,43 @@
+var Cart = {
+	
+	UpdateQuantity: function(form)
+	{
+		$(form).submit();
+	},
+
+	ValidateQuantityForm: function(form)
+	{
+		try{
+			var valid = true;
+			var qtyInputs = $(form).find('input.qtyInput');
+			qtyInputs.each(function() {
+				if(isNaN($(this).val()) || $(this).val() < 0 ) {
+					alert("Please enter a valid product quantity");
+					this.focus();
+					this.select();
+					valid = false;
+					return false;
+				}
+
+				if($(this).val() >= 101 ){
+					alert("Quantity should be equal or less than 100.");
+					window.location.href = "<%= bulk_info_cart_items_path %>"
+					this.focus();
+					this.select();
+					valid = false;
+					return false;
+				}
+
+			});
+			if(valid == false) {
+				return false;
+			}
+		}catch(e){
+   			console.log(e);
+   			return false;
+ 		}
+ 		form.submit();	
+	}
+
+
+};

@@ -1,0 +1,119 @@
+<div id=":t3" class="ii gt adP adO">
+	<div id=":t4" class="a3s aXjCH m158f7dd1ba5beb48">
+		<div>
+			<div class="adM">
+				<p>Dear <%= @order.shipping_full_name %></p>
+				<p>Thank you for shopping at BILD Store : India</p>
+				<p>The following items in your order will be shipped from our warehouse.<p>
+				<p>Once these items have been shipped, we will send you an email with the expected delivery date.</p>
+			</div>
+			<h2 style="font-size:22px;height:30px;color:#cc6600;border-bottom:dashed 1px gray">Thanks for Your Order</h2>
+			<div style="width:100%;padding:10px;background-color:#fff4ea"><img src="" alt="" class="CToWUd">&nbsp; Your order ID is <strong>#<%= @order.id %></strong>. A summary of your order is shown below.</div>
+			<br>
+			<table style="width:100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr>
+						<td  valign="top" width="50%">
+							<h3 style="font-family:Arial;font-size:18px">Shipping Address</h3>
+							<div style="font-family:Arial;font-size:12px"><strong><strong><%= @order.shipping_full_name %></strong>
+									<br>
+									<%= @order.billing_company %>
+									<br>
+									<%= @order.shipping_address_1 %><br>
+									<%= @order.shipping_city %>, <%= @shipping_state_name %> <%= @order.shipping_zip %><br>
+									<%= @shipping_country_name %>
+									<dl></dl>
+								</div>
+							</td>
+							<td  valign="top" width="50%">
+								<h3 style="font-family:Arial;font-size:18px">Billing Address</h3>
+								<div style="font-family:Arial;font-size:12px"><strong><strong><%= @order.billing_full_name %></strong>
+										<br>
+										<%= @order.billing_company %>
+										<br>
+										<%= @order.billing_address_1 %><br>
+										<%= @order.billing_city %>, <%= @billing_state_name %> <%= @order.billing_zip %><br>
+										<%= @billing_country_name %>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+					<br>
+					<h3 style="font-size:18px">Shipping Information..</h3>
+					<div style="font-size:12px">
+						Please Note:
+						<br>
+						<br>
+						* Shipping and Handling charges extra. The cost will be intimated via mail or phone upon placing the order.
+					</div>
+					<h3 style="font-size:18px">Your Order Contains...</h3>
+					<table width="100%"  cellspacing="0" cellpadding="0">
+						<tbody>
+							<tr>
+								<td style="font-family:Arial;font-size:12px;background-color:#020b6f;color:white;padding:5px;font-weight:bold" nowrap="">Cart Items</td>
+								<td style="font-family:Arial;font-size:12px;background-color:#020b6f;color:white;padding:5px;font-weight:bold" nowrap="" width="100">Qty</td>
+								<td style="font-size:12px;background-color:#020b6f;color:white;padding:5px;font-weight:bold" nowrap="" width="150">Item Price
+								</td>
+								<td style="font-family:Arial;font-size:12px;background-color:#020b6f;color:white;padding:5px;font-weight:bold" nowrap="" width="200" align="right">Item Total</td>
+							</tr>
+						</tbody>
+					</table>
+					<table width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #c7d7db">
+						<tbody>
+							<% @order.cart_items.each do |item| %>
+								<tr>
+									<td style="padding:5px;font-size:12px;border-bottom:solid 1px #cacaca">
+										<strong><%= item.product_name %></strong>
+										<br>
+									</td>
+									<td style="padding:5px;font-size:12px;border-bottom:solid 1px #cacaca" width="100"><%= item.quantity%></td>
+									<td style="padding:5px;font-size:12px;border-bottom:solid 1px #cacaca" width="150"><%= number_to_currency(item.unit_price) %></td>
+									<td style="padding:5px;font-size:12px;border-bottom:solid 1px #cacaca" align="right" width="200"><strong><%= number_to_currency(item.total_price) %></strong></td>
+								</tr>
+							<% end %>
+						</tbody>
+					</table>
+					<table width="100%"  cellspacing="0" cellpadding="4">
+						<tbody>
+							<tr>
+								<td align="right" style="font-family:Arial;font-size:12px"><strong>Subtotal:</strong></td>
+								<td width="100" align="right" style="font-family:Arial;font-size:12px"><strong><%= number_to_currency(@order.subtotal) %></strong></td>
+							</tr>
+						</tbody>
+					</table>
+					<table width="100%"  cellspacing="0" cellpadding="4">
+						<tbody>
+							<tr>
+								<td align="right" style="font-family:Arial;font-size:12px"><strong>Grand Total:</strong></td>
+								<td width="100" align="right" style="font-family:Arial;font-size:12px"><strong><%= number_to_currency(@order.subtotal) %></strong></td>
+							</tr>
+						</tbody>
+					</table>
+					<table width="100%" id="CheckoutCartGrid" cellspacing="0" cellpadding="4">
+						<tbody>
+							<tr>
+								<td align="right" style="font-family:Arial;font-size:12px">Payment Method:
+								</td>
+								<td width="100" align="right" style="font-family:Arial;font-size:12px"><%= @order.payment_mode %></td>
+							</tr>
+						</tbody>
+					</table>
+					<p style="margin-top:12px">
+						<strong>BILD International India Store</strong>
+						<br>
+						<a href="http://bildstore.in">http://bildstore.in/</a>
+					</p>
+					<hr size="1" style="height:1px;border-style:none;color:#444;background:#000;margin-top:8px">
+					<div style="font-size:11px;color:#444">
+						BILD International India Store
+					</div>
+					<div class="yj6qo"></div>
+					<div class="adL">
+					</div>
+				</div>
+				<div class="adL">
+				</div>
+			</div>
+		</div>
