@@ -45,7 +45,7 @@ gem 'cancancan','~> 1.15.0'
 gem "activeadmin", github: "gregbell/active_admin"
 # gem 'bootstrap-sass', '3.3.7'
 gem 'active_bootstrap_skin', '0.1.4'
-gem "kaminari", '1.0.1'
+gem "kaminari", '1.2.1'
 gem 'friendly_id', '5.2.1'
 #gem 'active_merchant_ccavenue'
 gem 'figaro', '1.1.1'
